@@ -1,7 +1,7 @@
 # Smart Campus Room Availability Checker — Assignment #04
 
 Software Engineering, Assignment #04 — *AI-assisted software evolution, refactoring and quality improvement.*
-Student: **Aliaidar Abilmansur**. AI assistant: **Claude Code (model Claude Opus 5.5)**, 2026-11-07.
+Student: **Nurdaulet Kalmurzayev**. AI assistant: **Claude Code (model Claude Opus 5.5)**, 2026-11-07.
 
 The A3 single-room prototype (Room 304) is extended to a catalog of **5 fictional rooms** with
 capacity and equipment filters, refactored into separate data / domain / UI modules, and covered by
