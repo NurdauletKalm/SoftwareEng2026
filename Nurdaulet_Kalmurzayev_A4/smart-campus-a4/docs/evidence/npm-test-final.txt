@@ -1,0 +1,112 @@
+$ npm test   # = node --test tests/
+npm notice run smart-campus-room-checker@1.0.0 test
+npm notice run node --test tests/
+▶ initial render
+  ✔ shows all 5 rooms, selects Room 304, no JS errors
+✔ initial render
+▶ AC1–AC5 regression through the UI (Room 304)
+  ✔ 660–720 -> Available
+  ✔ 630–690 -> Unavailable (AC4)
+  ✔ 720–840 -> Available
+  ✔ 720–841 -> Unavailable (AC2)
+  ✔ 540–570 -> Unavailable (AC1)
+  ✔ bookings list is unchanged after checks (AC5)
+✔ AC1–AC5 regression through the UI (Room 304)
+▶ F1/F2 filtering in the UI
+  ✔ successful filtering: 24 attendees + projector -> Room 304, Room 101, Room 415
+  ✔ capacity boundary: 25 attendees removes Room 304 and moves the selection
+✔ F1/F2 filtering in the UI
+▶ F3 blocked room
+  ✔ Room 415 is shown as Blocked and the check is Unavailable (AC3)
+✔ F3 blocked room
+▶ F4 empty state
+  ✔ unsuccessful filtering shows a clear empty state and disables the check
+  ✔ equipment combination with no match explains which items were requested; Clear filters recovers
+✔ F4 empty state
+▶ F5 room switching refreshes the result
+  ✔ 780–840: Available in Room 304, switching to Room 210 re-checks -> Unavailable (AC4)
+  ✔ when a filter removes the selected room, the result follows the new selection
+✔ F5 room switching refreshes the result
+▶ AC6 responsive layout
+  ✔ at 375 px wide there is no horizontal scroll and the result is readable
+✔ AC6 responsive layout
+✔ A3 test_1 touching after booking
+✔ A3 test_2 overlap
+✔ A3 test_3 blocked
+✔ A3 test_4 exactly 120 min
+✔ A3 test_5 121 min
+✔ A3 test_6 starts now
+✔ A3 test_7 inside booking
+✔ A3 test_8 covers booking
+✔ A3 test_9 touching before booking
+✔ A3 test_10 identical interval
+✔ A3 test_11 in the past
+✔ A3 test_12 one minute after now
+✔ A3 test_13 zero length
+✔ A3 test_14 reversed
+✔ A3 test_15 ends at 1440
+✔ A3 test_16 ends at 1441
+✔ A3 test_17 negative times
+✔ A3 test_18 empty bookings
+✔ A3 test_19 between two bookings (touching both)
+✔ A3 test_20 overlaps second booking
+✔ A3 test_21 existing list is not mutated (AC5)
+✔ A3 test_22 always returns a boolean (AC5)
+▶ AC1 — valid time
+  ✔ rejects a request that starts exactly at now (540–570)
+  ✔ accepts a request starting one minute after now (541–570)
+  ✔ rejects reversed and zero-length intervals
+  ✔ day bounds: end 1440 allowed, end 1441 rejected
+  ✔ non-integer minutes are rejected (no silent truncation)
+✔ AC1 — valid time
+▶ AC2 — 120-minute maximum (boundary)
+  ✔ exactly 120 minutes (720–840) is available
+  ✔ 121 minutes (720–841) is rejected by AC2
+✔ AC2 — 120-minute maximum (boundary)
+▶ AC3 — blocked room
+  ✔ a blocked room rejects an otherwise valid, free slot
+✔ AC3 — blocked room
+▶ AC4 — overlap rules (touching vs overlapping)
+  ✔ touching the end of a booking (660–720 after 600–660) is available
+  ✔ touching the start of a booking (570–600 before 600–660) is available
+  ✔ overlapping by one minute (659–720) is rejected and names the conflict
+  ✔ partial overlap (630–690) is rejected
+  ✔ overlaps() is symmetric and half-open
+✔ AC4 — overlap rules (touching vs overlapping)
+▶ AC5 — unambiguous verdict, no mutation
+  ✔ verdict is always a strict boolean with a message
+  ✔ room data is deep-frozen and unchanged after many checks
+✔ AC5 — unambiguous verdict, no mutation
+▶ Room isolation — the check uses the chosen room's bookings
+  ✔ 780–840 is free in Room 304 but booked in Room 210
+  ✔ 630–690 is booked in Room 304 but free in Room 112
+✔ Room isolation — the check uses the chosen room's bookings
+▶ Catalog (fictional data)
+  ✔ has at least four rooms, each with id, name, capacity, equipment, blocked and own bookings
+✔ Catalog (fictional data)
+▶ F1 — capacity filter (boundary)
+  ✔ exact capacity matches: 24 attendees -> Room 304 (capacity 24) included
+  ✔ insufficient capacity: 25 attendees -> Room 304 excluded
+  ✔ 1 attendee and no equipment shows the whole catalog
+  ✔ invalid attendee counts match nothing and produce a message
+✔ F1 — capacity filter (boundary)
+▶ F2 — equipment filter (ALL items required)
+  ✔ projector + computers -> only Room 415
+  ✔ a room with only SOME of the items is excluded
+  ✔ capacity and equipment combine (AND): 20 people + video-conf -> Room 101 only
+  ✔ no room has smart board + video conferencing -> empty result (feeds F4)
+✔ F2 — equipment filter (ALL items required)
+▶ F3 — blocked room is never reported available
+  ✔ Room 415 is blocked, has no bookings, and still returns Unavailable (AC3) for every valid slot
+  ✔ blocked rooms that meet the requirements are still listed (with a Blocked status in the UI)
+✔ F3 — blocked room is never reported available
+✔ toHHMM formats minutes and rejects out-of-range values
+✔ parseWholeNumber is strict (no parseInt truncation)
+ℹ tests 67
+ℹ suites 17
+ℹ pass 67
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2724.153484

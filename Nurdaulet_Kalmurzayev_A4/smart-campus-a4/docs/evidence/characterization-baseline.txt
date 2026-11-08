@@ -1,0 +1,22 @@
+$ git worktree add <tmp>/wt-baseline v1-baseline
+$ CHARACTERIZATION=1 APP_ROOT=<tmp>/wt-baseline node --test tests/ui/characterization.test.js
+✔ characterization 660-720 {} -> Available
+✔ characterization 630-690 {} -> Unavailable (AC4)
+✔ characterization 660-720 {"blocked":true} -> Unavailable (AC3)
+✔ characterization 720-840 {} -> Available
+✔ characterization 720-841 {} -> Unavailable (AC2)
+✔ characterization 540-570 {} -> Unavailable (AC1)
+✔ characterization 720-660 {} -> Unavailable (AC1)
+✔ characterization 1320-1440 {} -> Available
+✔ characterization 1350-1441 {} -> Unavailable (AC1)
+✔ characterization 660-720 {"dataset":"multi"} -> Available
+✔ characterization 800-860 {"dataset":"multi"} -> Unavailable (AC4)
+✔ characterization: existing bookings list is unchanged after checks (AC5)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1663.030802

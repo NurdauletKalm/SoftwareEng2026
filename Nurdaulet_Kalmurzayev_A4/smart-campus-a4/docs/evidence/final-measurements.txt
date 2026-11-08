@@ -1,0 +1,50 @@
+## Final measurements (HEAD 32977cb) — 2026-11-07 15:49
+
+### wc -l (source)
+   93 src/index.html
+   66 src/styles.css
+   65 src/data/rooms.js
+   50 src/domain/availability.js
+   17 src/domain/filters.js
+   15 src/domain/time.js
+  116 src/ui/app.js
+   70 src/ui/render.js
+  492 total
+
+### wc -l (tests)
+   55 tests/characterization/single-room.characterization.js
+  133 tests/ui/app.test.js
+   17 tests/ui/harness.js
+   50 tests/unit/a3-regression.test.js
+  107 tests/unit/availability.test.js
+   78 tests/unit/filters.test.js
+   18 tests/unit/time.test.js
+  458 total
+
+### Overlap rule implementations
+src/domain/availability.js:8:  return a.start < b.end && a.end > b.start;
+
+### 120-minute rule
+src/domain/availability.js:36:  if (end - start > MAX_DURATION) {
+
+### Day-bounds rule
+src/domain/availability.js:13:  return Number.isInteger(start) && Number.isInteger(end) && start >= 0 && start < end && end <= DAY_MINUTES;
+
+### HH:MM formatting implementations
+src/domain/time.js:11:export function toHHMM(minutes) {
+src/domain/time.js:13:  const pad = (n) => String(n).padStart(2, "0");
+
+### Places that write the result banner HTML
+src/ui/render.js:10:export function resultHTML(result, room, { refreshed = false } = {}) {
+src/ui/app.js:68:    banner.innerHTML = view.resultHTML(verdict, room, { refreshed: state.refreshedFor === room.id });
+
+### Input parsing implementations
+src/domain/time.js:5:export function parseWholeNumber(raw) {
+
+### Exported functions per module
+src/data/rooms.js: 5 exports, uses DOM: 0
+src/domain/availability.js: 5 exports, uses DOM: 0
+src/domain/filters.js: 3 exports, uses DOM: 0
+src/domain/time.js: 3 exports, uses DOM: 0
+src/ui/app.js: 0 exports, uses DOM: 4
+src/ui/render.js: 10 exports, uses DOM: 0

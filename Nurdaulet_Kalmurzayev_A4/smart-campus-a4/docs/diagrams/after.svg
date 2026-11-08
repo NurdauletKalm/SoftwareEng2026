@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" font-family="DejaVu Sans, Arial, sans-serif" font-size="12">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6478"/></marker></defs>
+  <rect width="800" height="430" fill="#fff"/>
+  <text x="16" y="24" font-size="15" font-weight="700" fill="#1d2433">AFTER — v2-final (arrows = "imports / depends on")</text>
+  <!-- layer labels -->
+  <text x="16" y="62" font-size="11" fill="#4a5368" font-weight="700">PRESENTATION</text>
+  <text x="16" y="200" font-size="11" fill="#4a5368" font-weight="700">DOMAIN (pure)</text>
+  <text x="16" y="330" font-size="11" fill="#4a5368" font-weight="700">DATA</text>
+  <!-- presentation -->
+  <rect x="120" y="40" width="190" height="88" rx="8" fill="#e7ecfb" stroke="#1f3a93" stroke-width="1.5"/>
+  <text x="134" y="62" font-weight="700">ui/app.js (controller)</text>
+  <text x="134" y="80">state, events, ONE render()</text>
+  <text x="134" y="96">only module touching DOM</text>
+  <text x="134" y="112">F3–F5 behaviour</text>
+  <rect x="370" y="40" width="200" height="88" rx="8" fill="#e7ecfb" stroke="#1f3a93"/>
+  <text x="384" y="62" font-weight="700">ui/render.js</text>
+  <text x="384" y="80">resultHTML() — 1 banner</text>
+  <text x="384" y="96">roomCardHTML(), emptyState</text>
+  <text x="384" y="112">timelineHTML(), hintText()</text>
+  <rect x="610" y="40" width="178" height="88" rx="8" fill="#f4f6fb" stroke="#8892a8"/>
+  <text x="624" y="62" font-weight="700">index.html</text>
+  <text x="624" y="80">styles.css</text>
+  <text x="624" y="96">(static markup)</text>
+  <!-- domain -->
+  <rect x="120" y="170" width="190" height="96" rx="8" fill="#e3f6ea" stroke="#3aa060" stroke-width="1.5"/>
+  <text x="134" y="192" font-weight="700">domain/availability.js</text>
+  <text x="134" y="210">checkAvailability() AC1–AC5</text>
+  <text x="134" y="226">overlaps(), isWellFormed…()</text>
+  <text x="134" y="242">canBook() (A3 contract)</text>
+  <rect x="370" y="170" width="200" height="96" rx="8" fill="#e3f6ea" stroke="#3aa060" stroke-width="1.5"/>
+  <text x="384" y="192" font-weight="700">domain/filters.js</text>
+  <text x="384" y="210">roomMatches() F1 + F2</text>
+  <text x="384" y="226">filterRooms()</text>
+  <text x="384" y="242">requirementsError()</text>
+  <rect x="610" y="170" width="178" height="96" rx="8" fill="#e3f6ea" stroke="#3aa060" stroke-width="1.5"/>
+  <text x="624" y="192" font-weight="700">domain/time.js</text>
+  <text x="624" y="210">parseWholeNumber()</text>
+  <text x="624" y="226">toHHMM()</text>
+  <text x="624" y="242">DAY_MINUTES</text>
+  <!-- data -->
+  <rect x="120" y="306" width="450" height="64" rx="8" fill="#fff6e0" stroke="#c99a2e" stroke-width="1.5"/>
+  <text x="134" y="328" font-weight="700">data/rooms.js — deep-frozen fictional catalog</text>
+  <text x="134" y="346">5 rooms × {id, name, capacity, equipment[], blocked, bookings[]}</text>
+  <text x="134" y="362">EQUIPMENT list, DEFAULT_NOW = 540</text>
+  <!-- tests -->
+  <rect x="610" y="306" width="178" height="64" rx="8" fill="#f4f6fb" stroke="#8892a8" stroke-dasharray="4 3"/>
+  <text x="624" y="328" font-weight="700">tests/</text>
+  <text x="624" y="346">52 unit → domain</text>
+  <text x="624" y="362">15 UI → browser</text>
+  <!-- arrows -->
+  <line x1="310" y1="84" x2="368" y2="84" stroke="#5b6478" marker-end="url(#a)"/>
+  <line x1="215" y1="128" x2="215" y2="168" stroke="#5b6478" marker-end="url(#a)"/>
+  <line x1="280" y1="128" x2="420" y2="168" stroke="#5b6478" marker-end="url(#a)"/>
+  <line x1="300" y1="122" x2="640" y2="168" stroke="#5b6478" marker-end="url(#a)"/>
+  <line x1="470" y1="128" x2="300" y2="172" stroke="#5b6478" marker-end="url(#a)"/>
+  <line x1="530" y1="128" x2="660" y2="168" stroke="#5b6478" marker-end="url(#a)"/>
+  <path d="M260 266 C 320 296, 620 296, 690 268" fill="none" stroke="#5b6478" marker-end="url(#a)"/>
+  <path d="M150 128 C 80 200, 80 300, 150 304" fill="none" stroke="#5b6478" marker-end="url(#a)"/>
+  <text x="18" y="398" font-size="11" fill="#4a5368">Each rule exists once: overlap ×1, 120-min ×1, day bounds ×1, HH:MM ×1, result banner ×1.</text>
+  <text x="18" y="414" font-size="11" fill="#4a5368">Domain and data modules have no DOM access, so they are unit-tested in Node without a browser.</text>
+</svg>

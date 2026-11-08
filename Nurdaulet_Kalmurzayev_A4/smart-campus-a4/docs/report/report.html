@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Aliaidar Abilmansur — Software Engineering Assignment 04</title>
+<style>
+  @page { size: A4; margin: 15mm 14mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Noto Sans", "DejaVu Sans", Arial, sans-serif; font-size: 10.2pt; line-height: 1.42; color: #1d2433; margin: 0; }
+  h1 { font-size: 21pt; margin: 0 0 4px; color: #1f3a93; }
+  h2 { font-size: 14.5pt; color: #1f3a93; border-bottom: 2px solid #1f3a93; padding-bottom: 3px; margin: 0 0 10px; break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 6px; break-after: avoid; }
+  h4 { font-size: 10.4pt; margin: 10px 0 4px; break-after: avoid; }
+  p { margin: 5px 0; }
+  section.page { break-before: page; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 9pt; break-inside: auto; }
+  tr { break-inside: avoid; }
+  th, td { border: 1px solid #c8cfdd; padding: 4px 6px; vertical-align: top; text-align: left; }
+  th { background: #e7ecfb; }
+  code, pre, .mono { font-family: "DejaVu Sans Mono", "Noto Sans Mono", monospace; font-size: 8.4pt; }
+  code { background: #f1f3f8; padding: 0 3px; border-radius: 3px; }
+  pre { background: #f6f7fb; border: 1px solid #dde2ee; border-radius: 6px; padding: 8px 10px; white-space: pre-wrap; margin: 6px 0 10px; break-inside: avoid; }
+  figure { margin: 8px 0 12px; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; border: 1px solid #c8cfdd; border-radius: 4px; }
+  figcaption { font-size: 8.6pt; color: #4a5368; margin-top: 4px; text-align: center; }
+  .two { display: flex; gap: 10px; align-items: flex-start; }
+  .two figure { flex: 1; }
+  .w80 img { max-width: 82%; }
+  .w70 img { max-width: 72%; }
+  .w60 img { max-width: 62%; }
+  .phone img { max-height: 118mm; width: auto; max-width: 100%; }
+  .three { display: flex; gap: 8px; align-items: flex-start; }
+  .three figure { flex: 1; }
+  .tall img { max-height: 150mm; width: auto; max-width: 100%; }
+  .cover { text-align: left; padding-top: 10mm; }
+  .cover .sub { font-size: 12.5pt; color: #4a5368; margin-bottom: 18px; }
+  .meta td:first-child { width: 33%; font-weight: 600; background: #f4f6fb; }
+  .ok { color: #1e6b3c; font-weight: 700; }
+  .bad { color: #b42318; font-weight: 700; }
+  .note { background: #fff8e6; border-left: 4px solid #c99a2e; padding: 6px 10px; margin: 8px 0; font-size: 9.4pt; }
+  .tag { display: inline-block; background: #e7ecfb; color: #1f3a93; font-weight: 700; border-radius: 4px; padding: 0 5px; font-size: 8.6pt; }
+  ul, ol { margin: 4px 0 8px; padding-left: 20px; }
+  li { margin: 2px 0; }
+  .toc li { margin: 1px 0; }
+  .small { font-size: 8.8pt; color: #4a5368; }
+  .reflection { border: 1px solid #c8cfdd; border-radius: 6px; padding: 8px 12px; background: #fafbfe; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <h1>Software Engineering — Assignment #04</h1>
+  <div class="sub">AI-assisted software evolution, refactoring and quality improvement<br>
+  Scenario: <b>Smart Campus Room Availability Checker</b></div>
+
+  <table class="meta">
+    <tr><td>Student</td><td><b>Aliaidar Abilmansur</b> (24B030978)</td></tr>
+    <tr><td>Practice group</td><td>Tuesday 16:00–19:00</td></tr>
+    <tr><td>Date of work &amp; verification</td><td>November 7, 2026</td></tr>
+    <tr><td><b>AI assistant used</b></td><td><b>Claude Code</b> (Anthropic) — model <b>Claude Opus 5.5</b>, used in the terminal with read/write access to the project folder only</td></tr>
+    <tr><td>Starting point</td><td>Assignment #03 prototype (Room 304 — Innovation Lab, Bolt.new v2 + <code>booking.py</code>). The Bolt.new TypeScript project lives only in the Bolt workspace, so — as the brief allows — an <b>equivalent minimal version</b> was reconstructed as plain HTML/JS together with the original <code>booking.py</code> and its 22 tests (tag <code>v1-baseline</code>).</td></tr>
+    <tr><td>Source code</td><td>Git repository <code>smart-campus-a4</code> (attached as <code>Aliaidar Abilmansur - source code.zip</code>, includes full <code>.git</code> history).<br>
+      Initial version: tag <code>v1-baseline</code> (commit <code>27167e1</code>) · behaviour-preserving refactor: <code>v1.1-refactor</code> (<code>35b170f</code>) · final: <code>v2-final</code> (<code>1377dae</code>)</td></tr>
+    <tr><td>Stack</td><td>HTML + CSS + JavaScript ES modules (no build step), Node.js 26 built-in test runner <code>node:test</code>, <code>playwright-core</code> 1.56.1 with system Chromium for UI tests</td></tr>
+  </table>
+
+  <h3>Submission checklist</h3>
+  <table>
+    <tr><th style="width:46%">Requirement</th><th style="width:10%">Status</th><th>Evidence in this document</th></tr>
+    <tr><td>Existing availability rules (AC1–AC6) still work</td><td class="ok">✓</td><td>§4.3 (22 ported A3 cases + AC tests), §3.4 characterization 12/12 before and after</td></tr>
+    <tr><td>At least four fictional rooms</td><td class="ok">✓ 5</td><td>§2.1 catalog table, <code>src/data/rooms.js</code></td></tr>
+    <tr><td>Capacity and equipment filters work</td><td class="ok">✓</td><td>§2.3 screenshots 2–4, §4.3 F1/F2 tests</td></tr>
+    <tr><td>At least ten executable tests</td><td class="ok">✓ 67</td><td>§4.4 commands and pass/fail results (67/67)</td></tr>
+    <tr><td>Refactoring and evaluation evidence</td><td class="ok">✓</td><td>§3 diagrams + design decisions, §5 evidence table</td></tr>
+    <tr><td>AI use and human review documented</td><td class="ok">✓</td><td>§1.5, §6 reflection, Appendix A AI-use record</td></tr>
+    <tr><td>README with setup, run and test commands</td><td class="ok">✓</td><td>Appendix B (also <code>README.md</code> in the repository)</td></tr>
+  </table>
+
+  <h3>Contents</h3>
+  <ol class="toc">
+    <li>Task 01 — Codebase analysis</li>
+    <li>Task 02 — Feature extension (room catalog + filtering) with screenshots</li>
+    <li>Task 03 — Refactoring (before/after diagrams, design decisions)</li>
+    <li>Task 04 — Automated testing (commands, results, boundaries)</li>
+    <li>Task 05 — Quality evaluation (evidence table)</li>
+    <li>Task 06 — AI reflection</li>
+    <li>Appendix A — AI-use record · B — README · C — Git history · D — Key source code</li>
+  </ol>
+</section>
+
+<!-- ============================ TASK 1 ============================ -->
+<section class="page">
+  <h2>1. Task 01 — Codebase analysis</h2>
+
+  <h3>1.1 Context given to the AI assistant</h3>
+  <p>Before any edit, Claude Code received a concise <b>repository map</b>, the acceptance criteria and the project constraints:</p>
+  <table>
+    <tr><th>Path (tag <code>v1-baseline</code>)</th><th>Role</th><th>Lines</th></tr>
+    <tr><td><code>index.html</code></td><td>Markup + inline CSS of the single-room page (Room 304)</td><td>106</td></tr>
+    <tr><td><code>app.js</code></td><td>ALL logic: data (<code>ROOM_NAME</code>, <code>DATASETS</code>, <code>state</code>), rules (<code>onCheck</code>), live hint (<code>updateHints</code>), rendering (<code>renderBookings</code>, <code>renderTimeline</code>), events</td><td>151</td></tr>
+    <tr><td><code>python/booking.py</code></td><td><code>can_book(start, end, now, blocked, existing)</code> — second implementation of AC1–AC4</td><td>33</td></tr>
+    <tr><td><code>python/test_booking.py</code></td><td>22 <code>unittest</code> cases for <code>can_book</code></td><td>86</td></tr>
+  </table>
+  <p><b>Acceptance criteria to preserve:</b> AC1 valid time (0 ≤ start &lt; end ≤ 1440, start &gt; now) · AC2 ≤ 120 min · AC3 blocked room rejects everything · AC4 overlap <code>start &lt; b_end &amp;&amp; end &gt; b_start</code>, touching allowed · AC5 unambiguous verdict, bookings never mutated · AC6 clear feedback, usable mobile layout.
+  <b>New rules:</b> F1 capacity ≥ attendees · F2 ALL selected equipment · F3 blocked never available · F4 empty state · F5 room change refreshes the result.
+  <b>Constraints:</b> fictional data, fixed current time, no login/payments/live APIs/database, small incremental changes.</p>
+  <p class="note"><b>Prompt (summary):</b> “Here is the repository map, AC1–AC6, F1–F5 and the constraints. Read <code>app.js</code> and <code>python/booking.py</code>. List at least three maintainability risks with file/function references, then propose a prioritised, small-step improvement plan. Do not edit code yet.”</p>
+
+  <h3>1.2 Baseline record (measured before editing)</h3>
+  <ul>
+    <li>Python unit tests: <code>cd python &amp;&amp; python3 -m unittest -v test_booking</code> → <span class="ok">22 / 22 passed</span>.</li>
+    <li>Web prototype: <b>0</b> automated tests (A3 only had manual checks).</li>
+    <li>New characterization UI test written first (<code>tests/characterization/single-room.characterization.js</code>) → <span class="ok">12 / 12 passed</span> on the baseline.</li>
+  </ul>
+  <figure class="w70"><img src="../screenshots/00_baseline_desktop.png"><figcaption>Figure 1 — Baseline (v1-baseline): single room, test-condition toggles, check of 630–690 → Unavailable (AC4).</figcaption></figure>
+
+  <h3>1.3 Maintainability risks (with file / function references)</h3>
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:30%">Risk</th><th style="width:33%">Evidence</th><th>Impact</th></tr>
+    <tr><td>R1</td><td><b>Same business rule implemented in several places</b></td><td>Overlap rule ×4: <code>app.js:59</code> <code>onCheck</code>, <code>app.js:84</code> <code>updateHints</code>, <code>app.js:117</code> <code>renderTimeline</code>, <code>booking.py:30</code>. 120-min rule ×4 (<code>app.js:51,80,119</code>, <code>booking.py:21</code>). Day bounds ×4 (<code>app.js:39,79,114</code>, <code>booking.py:12</code>).</td><td>A rule change needs 4 edits; copies already disagree — <code>renderTimeline</code> ignores <code>now</code>, so a past slot is painted green while <code>onCheck</code> says Unavailable.</td></tr>
+    <tr><td>R2</td><td><b>Rules welded to the DOM</b></td><td><code>onCheck()</code> (<code>app.js:24–67</code>) reads inputs, validates and writes <code>innerHTML</code> in one function.</td><td>Rules cannot be unit-tested without a browser → 0 web tests, a Python copy was needed.</td></tr>
+    <tr><td>R3</td><td><b>Single-room assumptions as globals</b></td><td><code>ROOM_NAME</code> (<code>app.js:5</code>), <code>DATASETS</code> (<code>app.js:7</code>), mutable <code>state.blocked</code>/<code>state.dataset</code> (<code>app.js:12–16</code>), <code>#room-title</code> in <code>index.html</code>.</td><td>No notion of a “selected room”; a catalog would multiply globals and risk checking against another room's bookings.</td></tr>
+    <tr><td>R4</td><td><b>Duplicated rendering</b></td><td>Result banner markup built 6× in <code>onCheck</code> (<code>app.js:33–65</code>); HH:MM formatting twice (<code>fmt()</code> <code>app.js:18</code> and inline <code>padStart</code> <code>app.js:98–99</code>).</td><td>Inconsistent wording; each new message copies markup again.</td></tr>
+    <tr><td>R5</td><td><b>Weak input contract, unenforced immutability</b></td><td><code>parseInt("660.5")</code> silently becomes 660 (<code>app.js:25–27</code>); booking arrays are plain mutable arrays (<code>app.js:7–10</code>).</td><td>JS and Python behave differently for non-integers; AC5 relies on discipline only.</td></tr>
+  </table>
+
+  <h3>1.4 Prioritised improvement plan (agreed before editing)</h3>
+  <ol>
+    <li><b>Safety net first:</b> characterization UI test must stay green on every step (12/12 on baseline).</li>
+    <li><b>Extract pure domain modules</b> (<code>domain/time.js</code>, <code>domain/availability.js</code>) with ONE implementation of AC1–AC4; port the 22 Python cases to JS; remove the Python duplicate. <i>(R1, R2, R5)</i></li>
+    <li><b>Extract presentation</b> (<code>ui/render.js</code>): one result renderer, one HH:MM formatter. <i>(R4)</i></li>
+    <li><b>Move data</b> to <code>data/rooms.js</code> as a deep-frozen catalog. <i>(R3, R5)</i> → re-run characterization test (must stay 12/12).</li>
+    <li><b>Feature:</b> <code>domain/filters.js</code> (F1, F2) + room selection UI (F3–F5) on top of the clean modules.</li>
+    <li><b>Tests:</b> unit tests for AC1–AC5 and F1–F3 boundaries; Playwright UI tests for F4, F5, AC6, room switching.</li>
+    <li><b>Evaluate</b> original vs final with measured numbers only.</li>
+  </ol>
+
+  <h3>1.5 AI suggestions I rejected or modified</h3>
+  <ul>
+    <li><b>Rejected — full rewrite in React + Vite + TypeScript with Vitest/Jest.</b> The assistant's first plan mirrored the Bolt.new stack. I rejected it: it is a rewrite (the brief asks to extend, not rebuild), adds a build step and hundreds of transitive packages for a 150-line app, and would make the before/after comparison meaningless. Decision: plain ES modules, no build, Node's built-in <code>node:test</code>, a single dev dependency (<code>playwright-core</code>) driving the system Chromium.</li>
+    <li><b>Modified — “hide blocked rooms from the filtered list”.</b> This conflicts with “display only rooms satisfying the user's selected requirements” (blocking is not a user requirement) and hides useful information. Changed to: blocked rooms are listed with a red <b>Blocked</b> badge and every check on them returns <i>Unavailable (AC3)</i>; F3 is enforced in the domain layer, not by hiding UI.</li>
+  </ul>
+</section>
+
+<!-- ============================ TASK 2 ============================ -->
+<section class="page">
+  <h2>2. Task 02 — Feature extension: room catalog and filtering</h2>
+
+  <h3>2.1 Fictional room catalog (<code>src/data/rooms.js</code>, deep-frozen)</h3>
+  <table>
+    <tr><th>ID</th><th>Name</th><th>Capacity</th><th>Equipment</th><th>Blocked</th><th>Own bookings [start, end)</th></tr>
+    <tr><td>R304</td><td>Room 304 — Innovation Lab</td><td>24</td><td>projector, whiteboard, smart board</td><td>no</td><td>600–660 (A3 default dataset)</td></tr>
+    <tr><td>R101</td><td>Room 101 — Lecture Hall</td><td>120</td><td>projector, microphone, video conferencing</td><td>no</td><td>480–600, 780–840</td></tr>
+    <tr><td>R210</td><td>Room 210 — Seminar Room</td><td>16</td><td>whiteboard, video conferencing</td><td>no</td><td>600–660, 780–840 (A3 multi dataset)</td></tr>
+    <tr><td>R415</td><td>Room 415 — Computer Lab</td><td>30</td><td>projector, whiteboard, computers</td><td><b>yes</b></td><td>— (blocked although free → tests F3)</td></tr>
+    <tr><td>R112</td><td>Room 112 — Huddle Room</td><td>6</td><td>whiteboard, video conferencing</td><td>no</td><td>—</td></tr>
+  </table>
+  <p>Fixed current time <code>DEFAULT_NOW = 540</code> (09:00), still editable on the page so AC1 can be demonstrated. The A3 “blocked” toggle and “dataset” selector were replaced by real per-room data: blocking is now a property of Room 415, the multi-booking dataset belongs to Room 210.</p>
+
+  <h3>2.2 How each rule is implemented</h3>
+  <table>
+    <tr><th style="width:9%">Rule</th><th style="width:45%">Implementation</th><th>Where</th></tr>
+    <tr><td>F1</td><td><code>room.capacity &gt;= attendees</code>; attendees must be a whole number ≥ 1, otherwise an inline error and no matches</td><td><code>domain/filters.js</code> <code>roomMatches()</code>, <code>requirementsError()</code></td></tr>
+    <tr><td>F2</td><td><code>equipment.every(item =&gt; room.equipment.includes(item))</code> — ALL selected items; required items are highlighted on each card</td><td><code>domain/filters.js</code>, <code>ui/render.js</code> <code>roomCardHTML()</code></td></tr>
+    <tr><td>F3</td><td><code>checkAvailability()</code> returns <i>Unavailable (AC3)</i> first for <code>room.blocked</code>; cards show “Blocked”, never “Open”</td><td><code>domain/availability.js</code>, <code>roomCardHTML()</code></td></tr>
+    <tr><td>F4</td><td>“No rooms match these requirements” + explanation built from the active filters + <b>Clear filters</b>; Check button disabled</td><td><code>emptyStateText()</code>, <code>ui/app.js</code> <code>renderRooms()</code></td></tr>
+    <tr><td>F5</td><td>Clicking another room (or a filter removing the selected room) re-runs the check for the <b>new room's own bookings</b>; banner says “Result for &lt;room&gt; · re-checked after the room changed”</td><td><code>ui/app.js</code> <code>selectRoom()</code>, single <code>render()</code></td></tr>
+    <tr><td>AC1–AC6</td><td>Unchanged rule order: AC3 → AC1 → AC2 → AC4, one implementation, verdict object <code>{available, rule, message, conflict}</code></td><td><code>domain/availability.js</code></td></tr>
+  </table>
+
+  <h3>2.3 Demonstration screenshots (final version, headless Chromium, <code>node scripts/screenshots.js</code>)</h3>
+  <figure class="w70"><img src="../screenshots/01_initial_available.png"><figcaption>Figure 2 — Initial state: 5 of 5 rooms, Room 304 selected; 660–720 touches the 600–660 booking → <b>Available</b> (AC4 touching rule preserved).</figcaption></figure>
+  <figure class="w70"><img src="../screenshots/02_filter_success.png"><figcaption>Figure 3 — <b>Successful filtering</b> (F1 + F2): 24 attendees + Projector → 3 of 5 rooms (R304 capacity exactly 24 is included; R415 shown as Blocked).</figcaption></figure>
+  <figure class="w70"><img src="../screenshots/03_filter_capacity_boundary.png"><figcaption>Figure 4 — Capacity boundary: 25 attendees removes Room 304 (capacity 24). The selection moves to Room 101 and the result is re-checked for Room 101 (F5).</figcaption></figure>
+  <figure class="w70"><img src="../screenshots/04_filter_empty_state.png"><figcaption>Figure 5 — <b>Unsuccessful filtering</b> (F4): Smart board + Video conferencing → no room; clear explanation, Clear filters button, Check disabled.</figcaption></figure>
+  <div class="two">
+    <figure><img src="../screenshots/05_switch_before_r304.png"><figcaption>Figure 6 — <b>Room switching</b>, before: 780–840 in Room 304 → Available.</figcaption></figure>
+    <figure><img src="../screenshots/06_switch_after_r210.png"><figcaption>Figure 7 — After clicking Room 210: result refreshed automatically → Unavailable, AC4 overlap with Room 210's own 13:00–14:00 booking.</figcaption></figure>
+  </div>
+  <div class="two">
+    <figure><img src="../screenshots/07_blocked_room.png"><figcaption>Figure 8 — F3: Room 415 has no bookings but is blocked → Unavailable (AC3).</figcaption></figure>
+    <figure><img src="../screenshots/08_ac2_121_minutes.png"><figcaption>Figure 9 — AC2 preserved: 720–841 (121 min) → Unavailable.</figcaption></figure>
+  </div>
+  <div class="two">
+    <figure><img src="../screenshots/09_ac1_starts_now.png"><figcaption>Figure 10 — AC1 preserved: 540–570 starts at now → live hint “AC1: start (09:00) must be after the current time”.</figcaption></figure>
+    <figure><img src="../screenshots/10_ac4_overlap.png"><figcaption>Figure 11 — AC4 preserved: 630–690 overlaps 10:00–11:00 in Room 304.</figcaption></figure>
+  </div>
+  <div class="three">
+    <figure class="phone"><img src="../screenshots/11_mobile_result.png"><figcaption>Figure 12 — AC6 mobile (375 px): 10 attendees + Video conferencing → 2 rooms; 630–690 in Room 101 → Available.</figcaption></figure>
+    <figure class="phone"><img src="../screenshots/12_mobile_empty_state.png"><figcaption>Figure 13 — Mobile empty state: 500 attendees → “No room seats 500 attendee(s)”.</figcaption></figure>
+    <figure class="phone"><img src="../screenshots/00_baseline_mobile.png"><figcaption>Figure 14 — For comparison: baseline (A3) on mobile — one room, no filtering.</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================ TASK 3 ============================ -->
+<section class="page">
+  <h2>3. Task 03 — Refactoring</h2>
+  <h3>3.1 Before / after module diagrams</h3>
+  <figure><img src="../diagrams/before.svg" style="width:100%;border:0"><figcaption>Figure 15 — Before: one global script mixes data, rules and DOM; the rules exist in four copies (three in JS, one in Python).</figcaption></figure>
+  <figure><img src="../diagrams/after.svg" style="width:100%;border:0"><figcaption>Figure 16 — After: three layers. Only <code>ui/app.js</code> touches the DOM; domain and data are pure and unit-tested in Node.</figcaption></figure>
+
+  <h3>3.2 Responsibilities after refactoring</h3>
+  <table>
+    <tr><th>Module</th><th>Responsibility</th><th>Lines</th><th>DOM access</th></tr>
+    <tr><td><code>src/data/rooms.js</code></td><td>Fictional room catalog, equipment list, <code>DEFAULT_NOW</code>, <code>deepFreeze()</code>, <code>findRoom()</code></td><td>65</td><td>none</td></tr>
+    <tr><td><code>src/domain/time.js</code></td><td><code>parseWholeNumber()</code>, <code>toHHMM()</code>, <code>DAY_MINUTES</code></td><td>15</td><td>none</td></tr>
+    <tr><td><code>src/domain/availability.js</code></td><td>Booking/availability rules AC1–AC5: <code>checkAvailability()</code>, <code>overlaps()</code>, <code>isWellFormedInterval()</code>, <code>canBook()</code> (A3 contract)</td><td>50</td><td>none</td></tr>
+    <tr><td><code>src/domain/filters.js</code></td><td>Filtering F1–F2: <code>roomMatches()</code>, <code>filterRooms()</code>, <code>requirementsError()</code></td><td>17</td><td>none</td></tr>
+    <tr><td><code>src/ui/render.js</code></td><td>Pure presentation: result banner, room cards, empty-state text, bookings list, timeline, hint</td><td>70</td><td>none (returns strings)</td></tr>
+    <tr><td><code>src/ui/app.js</code></td><td>Controller: state, event wiring, a single <code>render()</code> path</td><td>116</td><td>only here</td></tr>
+  </table>
+
+  <h3>3.3 Duplication removed</h3>
+  <table>
+    <tr><th>Logic</th><th>Before (copies)</th><th>After</th><th>Now lives in</th></tr>
+    <tr><td>Overlap rule (AC4)</td><td>4 — <code>app.js:59, 84, 117</code>, <code>booking.py:30</code></td><td>1</td><td><code>overlaps()</code></td></tr>
+    <tr><td>120-minute rule (AC2)</td><td>4 — <code>app.js:51, 80, 119</code>, <code>booking.py:21</code></td><td>1</td><td><code>checkAvailability()</code> + <code>MAX_DURATION</code></td></tr>
+    <tr><td>Day-bounds / interval shape (AC1)</td><td>4 — <code>app.js:39, 79, 114</code>, <code>booking.py:12</code></td><td>1</td><td><code>isWellFormedInterval()</code></td></tr>
+    <tr><td>HH:MM formatting</td><td>2 — <code>fmt()</code>, inline <code>padStart</code></td><td>1</td><td><code>toHHMM()</code></td></tr>
+    <tr><td>Result-banner markup</td><td>6 — six <code>banner.innerHTML</code> branches</td><td>1</td><td><code>resultHTML()</code></td></tr>
+  </table>
+  <p class="small">Counted with <code>grep</code> on both versions (commands in §5). Instead of the six banner branches and three separate rule copies, the controller makes <b>one</b> <code>checkAvailability()</code> call per render, and that verdict feeds the hint, the timeline colour and the banner.</p>
+
+  <h3>3.4 Behaviour kept consistent (evidence)</h3>
+  <p>The refactor was done in a separate commit (<code>v1.1-refactor</code>) <b>before</b> any feature work. The same characterization test was run on both versions:</p>
+  <div class="two">
+    <figure><img src="../screenshots/term_char_baseline.png"><figcaption>Figure 17 — Characterization test on <code>v1-baseline</code>: 12/12.</figcaption></figure>
+    <figure><img src="../screenshots/term_char_refactor.png"><figcaption>Figure 18 — Same test on the refactored code (<code>v1.1-refactor</code>): 12/12.</figcaption></figure>
+  </div>
+  <p>In addition, all 22 A3 Python cases were ported 1:1 to <code>tests/unit/a3-regression.test.js</code> and pass against the new <code>canBook()</code> wrapper. Two <b>intentional</b> differences, both on invalid input only: non-integer minutes such as <code>660.5</code> are now rejected (AC1) instead of being truncated by <code>parseInt</code> (this matches the A3 Python type guard), and the timeline colour now also respects <code>now</code> (the baseline painted past slots green).</p>
+
+  <h3>3.5 Design decisions and justification</h3>
+  <ol>
+    <li><b>Pure domain functions that return a verdict object, not a boolean.</b> <code>checkAvailability(request, room, now)</code> returns <code>{available, rule, message, conflict}</code>. <i>Why:</i> AC6 needs to explain <i>which</i> rule failed, and the banner, the live hint and the timeline must agree. With a boolean, each view re-derived the reason itself — exactly how three copies appeared in the baseline. One verdict object removes that reason to duplicate, and because the function is DOM-free it is tested in Node in milliseconds (52 unit tests). The A3 contract is kept as a thin <code>canBook()</code> wrapper so old regression cases still run.</li>
+    <li><b>The room is passed explicitly and the catalog is deep-frozen.</b> The check receives the selected room object (with its own <code>blocked</code> flag and <code>bookings</code>) instead of reading globals. <i>Why:</i> it makes “the availability check must use the chosen room's bookings” true by construction (tested in “Room isolation”), and <code>Object.freeze</code> turns AC5 from a convention into a guarantee — an accidental <code>push</code> throws a <code>TypeError</code> (tested).</li>
+    <li><b>One <code>render()</code> path derived from state.</b> Every event (filter change, room click, time input, Check) calls the same <code>render()</code>, which recomputes the matching rooms, fixes the selection and redraws the result. <i>Why:</i> F5 bugs come from forgetting to refresh one view; with a single path a stale result is impossible. The mutation check (§4.5) confirms F5 is protected by a test.</li>
+    <li><b>No build step; Python duplicate removed.</b> Plain ES modules keep the diff small and reviewable; the Python <code>can_book</code> was a fourth copy of the rules not used by the web app, so its cases were ported and the file deleted.</li>
+  </ol>
+</section>
+
+<!-- ============================ TASK 4 ============================ -->
+<section class="page">
+  <h2>4. Task 04 — Automated testing</h2>
+  <h3>4.1 Test inventory (67 executable tests)</h3>
+  <table>
+    <tr><th>File</th><th>Tests</th><th>Type</th><th>Covers</th></tr>
+    <tr><td><code>tests/unit/a3-regression.test.js</code></td><td>22</td><td>unit</td><td>All 22 Assignment #03 cases (AC1–AC5) ported 1:1</td></tr>
+    <tr><td><code>tests/unit/availability.test.js</code></td><td>17</td><td>unit</td><td>AC1–AC5 on the room API, boundaries, room isolation, immutability</td></tr>
+    <tr><td><code>tests/unit/filters.test.js</code></td><td>11</td><td>unit</td><td>Catalog integrity, F1, F2, F3</td></tr>
+    <tr><td><code>tests/unit/time.test.js</code></td><td>2</td><td>unit</td><td>Strict parsing, HH:MM formatting</td></tr>
+    <tr><td><code>tests/ui/app.test.js</code></td><td>15</td><td>UI / integration (Playwright, headless Chromium)</td><td>AC regression through the UI, F1–F5, AC6 mobile</td></tr>
+    <tr><td><code>tests/characterization/…</code></td><td>12</td><td>UI golden master</td><td>Single-room versions only (run explicitly, not part of the 67)</td></tr>
+  </table>
+
+  <h3>4.2 Required boundaries</h3>
+  <table>
+    <tr><th>Boundary</th><th>Pass case</th><th>Fail case</th><th>Tests</th></tr>
+    <tr><td>Duration 120 vs 121 min (AC2)</td><td>720–840 → Available</td><td>720–841 → Unavailable AC2</td><td>unit “exactly 120…”, “121 minutes…”; A3 test_4/test_5; UI 720–840 / 720–841</td></tr>
+    <tr><td>Touching vs overlapping (AC4)</td><td>660–720 and 570–600 next to 600–660 → Available</td><td>659–720 (1 min overlap), 630–690 → Unavailable AC4</td><td>unit AC4 group (5 tests); A3 test_1/2/9/10; UI 660–720 / 630–690</td></tr>
+    <tr><td>Exact vs insufficient capacity (F1)</td><td>24 attendees → R304 (cap 24) included</td><td>25 attendees → R304 excluded</td><td>unit F1 “exact capacity…”, “insufficient…”; UI “capacity boundary…”</td></tr>
+    <tr><td>Start vs now (AC1)</td><td>541–570 → Available</td><td>540–570 → Unavailable AC1</td><td>unit AC1 group; A3 test_6/test_12; UI 540–570</td></tr>
+    <tr><td>Day end (AC1)</td><td>1380–1440 → Available</td><td>1380–1441 → Unavailable AC1</td><td>unit “day bounds…”; A3 test_15/test_16</td></tr>
+  </table>
+
+  <h3>4.3 Requirement → test traceability</h3>
+  <table>
+    <tr><th style="width:10%">Req.</th><th>Unit tests</th><th>UI / integration tests</th></tr>
+    <tr><td>AC1</td><td>starts at now; one minute after now; reversed &amp; zero-length; day bounds; non-integer minutes</td><td>540–570 → Unavailable (AC1)</td></tr>
+    <tr><td>AC2</td><td>exactly 120 available; 121 rejected</td><td>720–840 Available; 720–841 Unavailable (AC2)</td></tr>
+    <tr><td>AC3</td><td>blocked room rejects a free slot</td><td>Room 415 → Unavailable (AC3)</td></tr>
+    <tr><td>AC4</td><td>touching end/start; 1-minute overlap names conflict; partial overlap; <code>overlaps()</code> symmetric</td><td>660–720 Available; 630–690 Unavailable (AC4)</td></tr>
+    <tr><td>AC5</td><td>strict boolean + message; catalog deep-frozen and unchanged after ≈125 checks; A3 test_21/22</td><td>bookings list unchanged after checks</td></tr>
+    <tr><td>AC6</td><td>—</td><td>375 px: no horizontal scroll, result inside viewport; messages name the rule</td></tr>
+    <tr><td>F1</td><td>exact (24) vs insufficient (25); whole catalog for 1; invalid counts (0, −3, 2.5, NaN)</td><td>24 + projector → 3 rooms; 25 removes Room 304</td></tr>
+    <tr><td>F2</td><td>projector + computers → R415 only; partial equipment excluded; 20 + video-conf → R101</td><td>24 + projector list</td></tr>
+    <tr><td>F3</td><td>R415 Unavailable for every 60-min slot (30-min steps) of the day; blocked rooms still listed</td><td>“Blocked” status + AC3 result</td></tr>
+    <tr><td>F4</td><td>empty result for smart board + video-conf</td><td>200 attendees → empty state, Check disabled; Clear filters recovers</td></tr>
+    <tr><td>F5</td><td>room isolation: 780–840 R304 vs R210; 630–690 R304 vs R112</td><td>switch R304 → R210 re-checks to AC4; filter removing selected room re-checks for the new one</td></tr>
+  </table>
+
+  <h3>4.4 Actual commands and pass/fail results</h3>
+  <pre>$ npm install          # added 1 package (playwright-core 1.56.1)
+$ npm run test:unit    # node --test tests/unit/   → tests 52, pass 52, fail 0
+$ npm run test:ui      # node --test tests/ui/     → tests 15, pass 15, fail 0
+$ npm test             # node --test tests/        → tests 67, suites 17, pass 67, fail 0</pre>
+  <div class="two">
+    <figure class="tall"><img src="../screenshots/term_unit.png"><figcaption>Figure 19 — <code>npm run test:unit</code>: 52/52 passed.</figcaption></figure>
+    <figure><img src="../screenshots/term_ui.png"><figcaption>Figure 20 — <code>npm run test:ui</code>: 15/15 passed (headless Chromium). Below: <code>npm test</code> summary 67/67.</figcaption>
+      <img src="../screenshots/term_all.png" style="margin-top:6px"></figure>
+  </div>
+
+  <h4>First run was NOT green — and why</h4>
+  <p>The first execution of the new suite reported <span class="bad">59 pass / 8 fail</span>. All 8 failures were UI tests that read the result with Playwright's <code>textContent</code>, which concatenates block elements without spaces (“Innovation Lab<b>Unavailable</b>AC1: …”), so the regular expressions did not match although the application showed the correct verdict. I fixed the <b>test helper</b> (switched to <code>innerText</code>, which respects layout), not the application, and re-ran: 67/67.</p>
+  <figure class="w70"><img src="../screenshots/term_first_run.png"><figcaption>Figure 21 — Recorded first run (<code>docs/evidence/first-run-failures.txt</code>).</figcaption></figure>
+
+  <h3>4.5 Do the tests actually catch bugs? (manual mutation check)</h3>
+  <p>Each defect below was injected alone with <code>sed</code>, the whole suite was run, and the file was restored with <code>git checkout</code> (<code>docs/evidence/mutation-check.md</code>). <b>9 of 9 injected defects were detected.</b></p>
+  <table>
+    <tr><th>Injected defect</th><th>File</th><th>npm test result</th><th>First failing test</th></tr>
+    <tr><td>AC4 touching treated as overlap (&lt; → &lt;=)</td><td>availability.js</td><td>pass 60 / <span class="bad">fail 7</span></td><td>AC1–AC5 regression through the UI</td></tr>
+    <tr><td>AC2 limit off-by-one (&gt; → &gt;=)</td><td>availability.js</td><td>pass 64 / <span class="bad">fail 3</span></td><td>AC1–AC5 regression through the UI</td></tr>
+    <tr><td>AC1 allows start == now (&lt;= → &lt;)</td><td>availability.js</td><td>pass 64 / <span class="bad">fail 3</span></td><td>AC1–AC5 regression through the UI</td></tr>
+    <tr><td>AC3/F3 blocked check removed</td><td>availability.js</td><td>pass 63 / <span class="bad">fail 4</span></td><td>F3 blocked room</td></tr>
+    <tr><td>F1 capacity strict (&gt;= → &gt;)</td><td>filters.js</td><td>pass 64 / <span class="bad">fail 3</span></td><td>F1/F2 filtering in the UI</td></tr>
+    <tr><td>F2 ANY instead of ALL (every → some)</td><td>filters.js</td><td>pass 49 / <span class="bad">fail 18</span></td><td>initial render</td></tr>
+    <tr><td>F5 result not refreshed on room change</td><td>ui/app.js</td><td>pass 66 / <span class="bad">fail 1</span></td><td>F5 room switching refreshes the result</td></tr>
+    <tr><td>F4 empty state never shown</td><td>ui/app.js</td><td>pass 65 / <span class="bad">fail 2</span></td><td>F4 empty state</td></tr>
+    <tr><td>AC5 data no longer frozen</td><td>data/rooms.js</td><td>pass 66 / <span class="bad">fail 1</span></td><td>AC5 — unambiguous verdict, no mutation</td></tr>
+  </table>
+</section>
+
+<!-- ============================ TASK 5 ============================ -->
+<section class="page">
+  <h2>5. Task 05 — Quality evaluation (original vs final)</h2>
+  <table>
+    <tr><th style="width:20%">Measure</th><th style="width:25%">Original (<code>v1-baseline</code>)</th><th style="width:25%">Final (<code>v2-final</code>)</th><th>How it was obtained</th></tr>
+    <tr><td><b>Automated tests passed / total</b></td><td>22 / 22 Python unit tests (only for <code>booking.py</code>, not for the web app).<br>Web app: 0 automated tests.</td><td><b>67 / 67</b> (52 unit + 15 browser UI). Plus characterization 12/12 on the single-room versions.</td><td>Executed: <code>python3 -m unittest -v test_booking</code> on a worktree of <code>v1-baseline</code>; <code>npm test</code> on <code>v2-final</code>. Raw logs in <code>docs/evidence/</code>.</td></tr>
+    <tr><td><b>Tests covering the code that ships</b></td><td>0 (Python copy was never used by the page)</td><td>67 — unit tests import the same modules the page imports</td><td>Import graph: <code>tests/unit/*</code> import <code>src/domain/*</code>, <code>src/data/*</code>.</td></tr>
+    <tr><td><b>Duplicated logic locations</b></td><td>20 copies of 5 pieces of logic (overlap 4, 120-min 4, day bounds 4, HH:MM 2, banner 6) → <b>15 redundant copies</b></td><td>5 pieces × 1 copy → <b>0 redundant copies</b><br><b>15 duplicated locations removed</b></td><td><code>grep -nE</code> for each rule on both versions (<code>baseline-measurements.txt</code>, <code>final-measurements.txt</code>). Redundant = copies − 1.</td></tr>
+    <tr><td><b>Code structure</b></td><td>1 global script (<code>app.js</code>, 151 lines, 5 functions mixing data + rules + DOM) + separate Python module</td><td>6 ES modules in 3 layers: data (1), domain (3), UI (2). 5 of 6 modules have no DOM access; DOM only in <code>ui/app.js</code></td><td><code>wc -l</code>; <code>grep -c 'document\.'</code> per module; see §3.2.</td></tr>
+    <tr><td><b>Rooms supported</b></td><td>1 (hard-coded)</td><td>5 (data-driven catalog, deep-frozen)</td><td><code>ROOMS.length</code>, catalog test.</td></tr>
+    <tr><td><b>Defect detection</b></td><td>not measured (no web tests)</td><td>9 / 9 injected defects caught</td><td>Manual mutation check, §4.5.</td></tr>
+    <tr><td><b>Source size</b></td><td>257 lines (html 106 + js 151) + 33 Python</td><td>492 lines (html 93, css 66, js 333)</td><td><code>wc -l</code>. Grew because of the new feature (catalog, filters, empty state) — not a quality metric by itself.</td></tr>
+  </table>
+  <p class="small">Numbers were not estimated: every value comes from a command whose output is stored in <code>docs/evidence/</code> (<code>baseline-measurements.txt</code>, <code>final-measurements.txt</code>, <code>npm-test-final.txt</code>, <code>python-baseline-tests.txt</code>, <code>characterization-*.txt</code>, <code>mutation-check.md</code>).</p>
+
+  <h3>5.1 Commands used for the duplication count</h3>
+  <pre>grep -nE 'start &lt; (b|existing)|start &lt; b_end' app.js python/booking.py          # overlap   → 4 hits (baseline)
+grep -nE '&gt; *120' app.js python/booking.py                                   # 120 rule  → 4 hits (baseline)
+grep -nE 'start &lt; 0|0 &lt;= start|end &gt; 1440|end &lt;= 1440' app.js python/booking.py  # bounds    → 4 code hits (baseline)
+grep -nc 'banner.innerHTML' app.js                                          # banner    → 6 (baseline)
+grep -rnE '\.start &lt; [a-z.]*end &amp;&amp; [a-z.]*end &gt; [a-z.]*start' src            # overlap   → 1 (final)
+grep -rnE '&gt; *(120|MAX_DURATION)' src                                       # 120 rule  → 1 (final)
+grep -rnE 'end &gt; DAY_MINUTES|end &lt;= DAY_MINUTES|end &gt; 1440' src                # bounds    → 1 (final)</pre>
+  <p>The measurement also changed the code: the first “final” measurement still found the day-bounds rule copied in <code>ui/render.js</code> (timeline). It was extracted into <code>isWellFormedInterval()</code> (commit <code>32977cb</code>) and re-measured.</p>
+
+  <h3>5.2 Remaining limitations</h3>
+  <ul>
+    <li><b>Single fixed day.</b> Times are minutes 0–1440 of one day; no dates, time zones or recurring bookings. Bookings are static fictional data, nothing is persisted (by design of the scope).</li>
+    <li><b>Accessibility is partial.</b> Room cards are <code>button role="radio"</code> inside a <code>radiogroup</code>, but arrow-key navigation is not implemented, and no automated accessibility audit (e.g. axe) is run.</li>
+    <li><b>Browser coverage.</b> UI tests run only in Chromium; Firefox/WebKit are not tested. AC6 is checked at one phone width (375 px).</li>
+    <li><b>Auto-selection after filtering.</b> When a filter removes the selected room, the first matching room is selected automatically. It is labelled (“re-checked after the room changed”), but a user might expect the selection to be cleared instead.</li>
+    <li><b>Characterization test</b> can only run on the single-room versions, because the final UI replaced the blocked/dataset toggles with real per-room data; after that point the AC regression is guaranteed by the unit tests and UI tests instead.</li>
+    <li><b>Mutation testing was manual</b> (9 hand-picked mutants), not a full tool such as Stryker.</li>
+  </ul>
+</section>
+
+<!-- ============================ TASK 6 ============================ -->
+<section class="page">
+  <h2>6. Task 06 — AI reflection <span class="small">(269 words)</span></h2>
+  <div class="reflection">
+    <p><b>What context did I provide?</b> I gave Claude Code a short repository map (four files with their roles and sizes), the six original acceptance criteria, the new rules F1–F5, and the constraints: fictional data, a fixed current time, no login, database or live APIs, and small steps instead of a rewrite. I asked for a risk analysis and a plan before any code was edited.</p>
+    <p><b>Which suggestions were useful or incorrect?</b> Useful: splitting the code into data, domain and UI modules; returning a verdict object (rule + message) instead of a bare boolean, so the banner, hint and timeline share one decision; deep-freezing the catalog to enforce AC5; and writing a characterization test before refactoring. Incorrect or unsuitable: rebuilding the app in React, Vite and TypeScript; hiding blocked rooms; and a UI-test helper based on textContent that made eight correct tests fail. The assistant also treated de-duplication as finished, but my grep measurement still found the day-bounds rule copied in render.js.</p>
+    <p><b>What did I verify?</b> I ran every command myself: the characterization test on the baseline and on the refactored version (12/12 each), the full suite (67/67), the screenshots in a real browser, and a manual mutation check in which all nine injected defects were detected.</p>
+    <p><b>How did tests influence decisions?</b> The characterization test told me when a refactor was safe to commit, the 24-versus-25 tests fixed the F1 boundary, and the failing first run made me repair the test helper instead of the application.</p>
+    <p><b>What next?</b> Arrow-key navigation for the room list, an automated accessibility check, UI tests in Firefox and WebKit, and running the suite in CI.</p>
+  </div>
+
+  <h3>Optional advanced extension</h3>
+  <p>The work was done in an agentic CLI environment (Claude Code) with minimal permissions: access limited to the project folder, no credentials or private data shared, no network calls from the app, and the only installed package was <code>playwright-core</code>. No new <code>SKILL.md</code> was created.</p>
+</section>
+
+<!-- ============================ APPENDIX A ============================ -->
+<section class="page">
+  <h2>Appendix A — AI-use record</h2>
+  <p><b>Tool / model:</b> Claude Code (Anthropic), model Claude Opus 5.5 · <b>Date:</b> 2026-11-07 · <b>Mode:</b> terminal agent; reads files, runs shell commands, edits files in <code>smart-campus-a4/</code>; every change reviewed as a Git diff and committed in small steps.</p>
+  <table>
+    <tr><th style="width:4%">#</th><th style="width:17%">Prompt summary</th><th style="width:21%">Output used</th><th style="width:20%">Problems found</th><th style="width:19%">Changes made (human decision)</th><th>Verification source</th></tr>
+    <tr><td>1</td><td>Analyse the repository (map + AC1–AC6 + F1–F5 + constraints); list ≥3 risks with references; plan; no edits.</td><td>Risks R1–R5 with line references; 7-step plan.</td><td>Plan began with a React/Vite/TS rewrite; suggested hiding blocked rooms.</td><td>Rewrite rejected (no-build ES modules); blocked rooms shown with a badge instead (§1.5).</td><td>Line references checked by <code>grep -n</code> (<code>baseline-measurements.txt</code>).</td></tr>
+    <tr><td>2</td><td>Write a characterization test that records the current single-room behaviour before refactoring.</td><td><code>single-room.characterization.js</code> (12 cases), static server, Playwright harness.</td><td>—</td><td>Kept; made opt-in via <code>CHARACTERIZATION=1</code>.</td><td>12/12 on <code>v1-baseline</code>.</td></tr>
+    <tr><td>3</td><td>Extract pure modules (time, availability, data, render, controller) with no behaviour change; port the Python tests.</td><td>Modules of <code>v1.1-refactor</code>; 22 ported cases.</td><td>Strict parser changes behaviour for non-integer input.</td><td>Accepted as an intentional fix (matches A3 type guard), documented in §3.4.</td><td>Characterization 12/12 before and after; ported tests 22/22.</td></tr>
+    <tr><td>4</td><td>Add ≥4 fictional rooms, capacity + equipment filters and room selection (F1–F5) on top of the modules.</td><td>Catalog, <code>filters.js</code>, room list, empty state, single <code>render()</code>.</td><td>The “re-checked after the room changed” note stayed visible after the user edited the times.</td><td>Note now cleared on any time input (<code>onTimeInput</code>).</td><td>Manual browser review; F5 UI tests.</td></tr>
+    <tr><td>5</td><td>Write ≥10 tests incl. AC1–AC5 regression, F1–F5, 120/121, touching/overlap, exact/insufficient capacity, ≥1 UI test.</td><td>52 unit + 15 UI tests.</td><td>First run 8 failures caused by the test helper (<code>textContent</code>), not by the app.</td><td>Helper switched to <code>innerText</code>; Playwright timeout reduced to 5 s for fast failures.</td><td>Re-run 67/67; mutation check 9/9.</td></tr>
+    <tr><td>6</td><td>Measure duplication and structure on both versions with grep / wc; do not invent numbers.</td><td>Measurement commands and files.</td><td>Day-bounds rule still duplicated in <code>render.js</code> although the refactor was reported as complete.</td><td>Extracted <code>isWellFormedInterval()</code> (commit <code>32977cb</code>).</td><td>Re-measured: 1 copy; 67/67 tests.</td></tr>
+  </table>
+
+  <h3>Selected prompts (verbatim excerpts)</h3>
+  <pre>P1  "Here is the repository map, AC1–AC6, F1–F5 and the constraints. Read app.js and python/booking.py.
+     List at least three maintainability risks with file/function references, then propose a
+     prioritised, small-step improvement plan. Do not edit code yet."
+P3  "Refactor the single-room app into src/domain (time, availability), src/data and src/ui (render,
+     app). Behaviour must not change: the characterization test has to stay 12/12. Port the 22
+     python/test_booking.py cases to node:test and remove the Python duplicate."
+P5  "Add tests: AC1–AC5 regression, F1–F5, boundaries 120 vs 121, touching vs overlapping,
+     exact vs insufficient capacity, and at least one browser UI test. Show me the real output."</pre>
+</section>
+
+<!-- ============================ APPENDIX B ============================ -->
+<section class="page">
+  <h2>Appendix B — README (setup, run, test)</h2>
+  <pre>Requirements: Node.js ≥ 20 (tested v26.10.0); a Chromium/Chrome binary for UI tests
+(auto-detected: /usr/bin/chromium, /usr/bin/chromium-browser, /usr/bin/google-chrome,
+or set CHROMIUM_PATH=/path/to/chrome)
+
+npm install          # installs the only dev dependency: playwright-core (no browser download)
+npm start            # serves the repo on http://127.0.0.1:8080 -> open http://127.0.0.1:8080/src/
+npm test             # all 67 tests (node --test tests/)
+npm run test:unit    # 52 unit tests (domain + data, no browser)
+npm run test:ui      # 15 Playwright UI/integration tests (headless Chromium)
+node scripts/screenshots.js   # regenerates docs/screenshots/*.png
+
+# characterization test on the single-room versions
+git worktree add ../baseline v1-baseline
+CHARACTERIZATION=1 APP_ROOT=../baseline node --test tests/characterization/single-room.characterization.js
+git checkout v1.1-refactor
+CHARACTERIZATION=1 APP_ROOT=src node --test tests/characterization/single-room.characterization.js</pre>
+  <p>The app is plain HTML + ES modules (no build step). Browsers block ES modules on <code>file://</code>, so open it through <code>npm start</code> or any static server.</p>
+  <pre>smart-campus-a4/
+├─ src/  index.html, styles.css
+│  ├─ data/rooms.js            fictional deep-frozen catalog
+│  ├─ domain/time.js           parseWholeNumber, toHHMM
+│  ├─ domain/availability.js   AC1–AC5
+│  ├─ domain/filters.js        F1–F2
+│  ├─ ui/render.js             pure HTML builders
+│  └─ ui/app.js                controller
+├─ tests/ unit/ (52) · ui/ (15) · characterization/ (12, single-room versions)
+├─ scripts/ serve.js · screenshots.js
+└─ docs/  01-codebase-analysis.md · diagrams/ · screenshots/ · evidence/ · report/</pre>
+
+  <h2 style="margin-top:18px">Appendix C — Git history</h2>
+  <pre>1377dae (tag: v2-final)     docs: README, diagrams, screenshots, evidence logs; fail-fast UI harness
+32977cb                     refactor: single isWellFormedInterval() shared by domain and timeline
+8051a67                     test: AC1-AC5 regression, F1-F5, boundaries and Playwright UI tests (67 tests)
+7565158                     feat: room catalog (5 fictional rooms) with capacity/equipment filters (F1-F5)
+35b170f (tag: v1.1-refactor) refactor: split single-room app into data/domain/ui modules (no behaviour change)
+3d589f2                     test: characterization UI test + Task 1 codebase analysis
+27167e1 (tag: v1-baseline)  baseline: A3 single-room prototype (Room 304) + Python can_book reference</pre>
+  <p class="small">Each step is one reviewed commit; tests were run after every step (workflow: baseline → plan → one change at a time → test → review diff → document).</p>
+</section>
+
+<!-- ============================ APPENDIX D ============================ -->
+<section class="page">
+  <h2>Appendix D — Key source code (final version)</h2>
+  <h4><code>src/domain/availability.js</code></h4>
+  <pre>%%availability%%</pre>
+  <h4><code>src/domain/filters.js</code></h4>
+  <pre>%%filters%%</pre>
+  <h4><code>src/domain/time.js</code></h4>
+  <pre>%%time%%</pre>
+  <h4><code>src/ui/app.js</code> (controller)</h4>
+  <pre>%%app%%</pre>
+</section>
+</body>
+</html>

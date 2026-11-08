@@ -1,0 +1,42 @@
+## Baseline measurements (tag v1-baseline, 27167e1) — 2026-11-07 15:36
+
+### wc -l
+  106 index.html
+  151 app.js
+   33 python/booking.py
+   86 python/test_booking.py
+  376 total
+
+### Overlap rule  (grep -nE '< *[a-z_\[\]0-9]*\[1\] *&& *end *>' / 'start < b_end')
+app.js:59:    if (start < b[1] && end > b[0]) {
+app.js:84:        if (start < existing[i][1] && end > existing[i][0]) { hint = "Overlaps an existing booking."; break; }
+app.js:117:      if (start < existing[j][1] && end > existing[j][0]) clash = true;
+python/booking.py:30:        if start < b_end and b_start < end:
+
+### 120-minute rule
+python/booking.py:21:    if end - start > 120:
+app.js:51:  if (end - start > 120) {
+app.js:80:    else if (end - start > 120) hint = "Longer than 120 minutes.";
+app.js:119:    var cls = clash || state.blocked || end - start > 120 ? "cand-bad" : "cand-ok";
+
+### Day-bounds rule (1440)
+python/booking.py:11:    # 0 <= start < end <= 1440 ensures valid chronological times within one day.
+python/booking.py:12:    if not (0 <= start < end <= 1440):
+app.js:39:  if (isNaN(start) || isNaN(end) || isNaN(now) || start < 0 || end > 1440 || start >= end) {
+app.js:79:    if (start < 0 || end > 1440 || start >= end) hint = "Start must be before end, inside 0–1440.";
+app.js:114:  if (!isNaN(start) && !isNaN(end) && start < end && start >= 0 && end <= 1440) {
+
+### HH:MM formatting implementations
+18:function fmt(m) {
+98:    var sh = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+99:    var eh = String(Math.floor(e / 60)).padStart(2, "0") + ":" + String(e % 60).padStart(2, "0");
+
+### Result banner HTML built
+6
+
+### Functions in app.js
+18:function fmt(m) {
+24:function onCheck() {
+70:function updateHints() {
+92:function renderBookings() {
+105:function renderTimeline() {

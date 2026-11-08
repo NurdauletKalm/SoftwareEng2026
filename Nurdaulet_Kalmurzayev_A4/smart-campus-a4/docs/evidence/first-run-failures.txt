@@ -1,0 +1,15 @@
+✖ AC1–AC5 regression through the UI (Room 304)
+✖ F3 blocked room
+✖ F5 room switching refreshes the result
+ℹ tests 67
+ℹ pass 59
+ℹ fail 8
+✖ failing tests:
+✖ 660–720 -> Available
+✖ 630–690 -> Unavailable (AC4)
+✖ 720–840 -> Available
+✖ 720–841 -> Unavailable (AC2)
+✖ 540–570 -> Unavailable (AC1)
+✖ Room 415 is shown as Blocked and the check is Unavailable (AC3)
+✖ 780–840: Available in Room 304, switching to Room 210 re-checks -> Unavailable (AC4)
+✖ when a filter removes the selected room, the result follows the new selection

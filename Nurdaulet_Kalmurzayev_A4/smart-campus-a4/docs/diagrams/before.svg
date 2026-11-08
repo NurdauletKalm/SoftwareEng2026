@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="DejaVu Sans, Arial, sans-serif" font-size="12">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5b6478"/></marker></defs>
+  <rect width="760" height="330" fill="#fff"/>
+  <text x="16" y="24" font-size="15" font-weight="700" fill="#1d2433">BEFORE — v1-baseline (A3 prototype)</text>
+  <!-- index.html -->
+  <rect x="16" y="44" width="170" height="70" rx="8" fill="#eef1f8" stroke="#8892a8"/>
+  <text x="30" y="68" font-weight="700">index.html</text>
+  <text x="30" y="86">markup + inline CSS</text>
+  <text x="30" y="102">(Room 304 hard-coded)</text>
+  <!-- app.js monolith -->
+  <rect x="236" y="44" width="300" height="270" rx="8" fill="#fdecec" stroke="#d64545" stroke-width="1.5"/>
+  <text x="250" y="68" font-weight="700">app.js — 151 lines, global script</text>
+  <text x="250" y="88" fill="#4a5368">data: ROOM_NAME, DATASETS, mutable state</text>
+  <rect x="250" y="98" width="272" height="40" rx="6" fill="#fff" stroke="#d64545"/>
+  <text x="260" y="114" font-weight="700">onCheck()</text>
+  <text x="260" y="130">parse + AC1–AC4 + 6× banner innerHTML</text>
+  <rect x="250" y="146" width="272" height="40" rx="6" fill="#fff" stroke="#d64545"/>
+  <text x="260" y="162" font-weight="700">updateHints()</text>
+  <text x="260" y="178">parse + bounds + 120 + overlap (copy 2)</text>
+  <rect x="250" y="194" width="272" height="40" rx="6" fill="#fff" stroke="#d64545"/>
+  <text x="260" y="210" font-weight="700">renderTimeline()</text>
+  <text x="260" y="226">parse + bounds + 120 + overlap (copy 3)</text>
+  <rect x="250" y="242" width="272" height="28" rx="6" fill="#fff" stroke="#d64545"/>
+  <text x="260" y="261">renderBookings() — own HH:MM formatter</text>
+  <text x="250" y="294" fill="#b42318" font-size="11">rules + DOM + data in one file: not unit-testable</text>
+  <!-- python -->
+  <rect x="562" y="44" width="186" height="90" rx="8" fill="#fff6e0" stroke="#c99a2e"/>
+  <text x="576" y="68" font-weight="700">python/booking.py</text>
+  <text x="576" y="86">can_book() —</text>
+  <text x="576" y="102">AC1–AC4 (copy 4)</text>
+  <text x="576" y="120" fill="#4a5368">not used by the web app</text>
+  <rect x="562" y="164" width="186" height="60" rx="8" fill="#fff6e0" stroke="#c99a2e"/>
+  <text x="576" y="188" font-weight="700">test_booking.py</text>
+  <text x="576" y="206">22 unittest cases</text>
+  <line x1="186" y1="80" x2="234" y2="80" stroke="#5b6478" marker-end="url(#a)"/>
+  <text x="190" y="72" font-size="10" fill="#4a5368">&lt;script&gt;</text>
+  <line x1="655" y1="164" x2="655" y2="136" stroke="#5b6478" marker-end="url(#a)"/>
+</svg>

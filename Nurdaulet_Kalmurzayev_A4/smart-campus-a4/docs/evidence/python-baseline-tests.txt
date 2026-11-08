@@ -1,0 +1,28 @@
+$ cd python && python3 -m unittest -v test_booking
+test_1 (test_booking.BookingTests.test_1) ... ok
+test_10 (test_booking.BookingTests.test_10) ... ok
+test_11 (test_booking.BookingTests.test_11) ... ok
+test_12 (test_booking.BookingTests.test_12) ... ok
+test_13 (test_booking.BookingTests.test_13) ... ok
+test_14 (test_booking.BookingTests.test_14) ... ok
+test_15 (test_booking.BookingTests.test_15) ... ok
+test_16 (test_booking.BookingTests.test_16) ... ok
+test_17 (test_booking.BookingTests.test_17) ... ok
+test_18 (test_booking.BookingTests.test_18) ... ok
+test_19 (test_booking.BookingTests.test_19) ... ok
+test_2 (test_booking.BookingTests.test_2) ... ok
+test_20 (test_booking.BookingTests.test_20) ... ok
+test_21 (test_booking.BookingTests.test_21) ... ok
+test_22 (test_booking.BookingTests.test_22) ... ok
+test_3 (test_booking.BookingTests.test_3) ... ok
+test_4 (test_booking.BookingTests.test_4) ... ok
+test_5 (test_booking.BookingTests.test_5) ... ok
+test_6 (test_booking.BookingTests.test_6) ... ok
+test_7 (test_booking.BookingTests.test_7) ... ok
+test_8 (test_booking.BookingTests.test_8) ... ok
+test_9 (test_booking.BookingTests.test_9) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.001s
+
+OK

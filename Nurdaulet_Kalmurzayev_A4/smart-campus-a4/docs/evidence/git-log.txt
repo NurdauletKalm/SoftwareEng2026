@@ -1,0 +1,7 @@
+1377dae (HEAD -> main, tag: v2-final) docs: README, diagrams, screenshots, evidence logs; fail-fast UI harness
+32977cb refactor: single isWellFormedInterval() shared by domain and timeline
+8051a67 test: AC1-AC5 regression, F1-F5, boundaries and Playwright UI tests (67 tests)
+7565158 feat: room catalog (5 fictional rooms) with capacity/equipment filters (F1-F5)
+35b170f (tag: v1.1-refactor) refactor: split single-room app into data/domain/ui modules (no behaviour change)
+3d589f2 test: characterization UI test + Task 1 codebase analysis
+27167e1 (tag: v1-baseline) baseline: A3 single-room prototype (Room 304) + Python can_book reference

@@ -1,0 +1,10 @@
+$ npm test
+✔ parseWholeNumber is strict (no parseInt truncation)
+ℹ tests 67
+ℹ suites 17
+ℹ pass 67
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2596.048921

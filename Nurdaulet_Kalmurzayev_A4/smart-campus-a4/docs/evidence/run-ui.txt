@@ -1,0 +1,40 @@
+$ npm run test:ui
+npm notice run smart-campus-room-checker@1.0.0 test:ui
+npm notice run node --test tests/ui/
+▶ initial render
+  ✔ shows all 5 rooms, selects Room 304, no JS errors
+✔ initial render
+▶ AC1–AC5 regression through the UI (Room 304)
+  ✔ 660–720 -> Available
+  ✔ 630–690 -> Unavailable (AC4)
+  ✔ 720–840 -> Available
+  ✔ 720–841 -> Unavailable (AC2)
+  ✔ 540–570 -> Unavailable (AC1)
+  ✔ bookings list is unchanged after checks (AC5)
+✔ AC1–AC5 regression through the UI (Room 304)
+▶ F1/F2 filtering in the UI
+  ✔ successful filtering: 24 attendees + projector -> Room 304, Room 101, Room 415
+  ✔ capacity boundary: 25 attendees removes Room 304 and moves the selection
+✔ F1/F2 filtering in the UI
+▶ F3 blocked room
+  ✔ Room 415 is shown as Blocked and the check is Unavailable (AC3)
+✔ F3 blocked room
+▶ F4 empty state
+  ✔ unsuccessful filtering shows a clear empty state and disables the check
+  ✔ equipment combination with no match explains which items were requested; Clear filters recovers
+✔ F4 empty state
+▶ F5 room switching refreshes the result
+  ✔ 780–840: Available in Room 304, switching to Room 210 re-checks -> Unavailable (AC4)
+  ✔ when a filter removes the selected room, the result follows the new selection
+✔ F5 room switching refreshes the result
+▶ AC6 responsive layout
+  ✔ at 375 px wide there is no horizontal scroll and the result is readable
+✔ AC6 responsive layout
+ℹ tests 15
+ℹ suites 7
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2603.898736

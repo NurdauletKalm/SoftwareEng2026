@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Campus Room Availability Checker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Smart Campus Room Availability Checker</h1>
+    <p>Fictional campus data · no login, database or live APIs</p>
+  </header>
+  <main>
+    <section class="card" aria-labelledby="req-title">
+      <h2 id="req-title"><span class="step">1</span> Room requirements</h2>
+      <label for="attendees">Attendees</label>
+      <input id="attendees" type="number" min="1" step="1" value="1" inputmode="numeric">
+      <fieldset id="equipment">
+        <legend>Required equipment (room must have all)</legend>
+        <div id="equipment-options" class="chips-input"></div>
+      </fieldset>
+      <p class="error" id="req-error" role="alert" hidden></p>
+      <div class="list-head">
+        <h3>Matching rooms</h3>
+        <span class="count" id="match-count" aria-live="polite"></span>
+      </div>
+      <div id="rooms" class="rooms" role="radiogroup" aria-label="Matching rooms"></div>
+      <div id="empty-state" class="empty" hidden>
+        <strong>No rooms match these requirements.</strong>
+        <p id="empty-detail"></p>
+        <button type="button" class="secondary" id="clear-filters">Clear filters</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="check-title">
+      <h2 id="check-title"><span class="step">2</span> Check a time</h2>
+      <p class="selected">Selected room: <strong id="selected-room">—</strong></p>
+      <label for="now">Current time (now), minutes 0–1439</label>
+      <input id="now" type="number" min="0" max="1439" step="1" value="540">
+      <span class="badge" id="now-hhmm">09:00</span>
+      <div class="row">
+        <div>
+          <label for="start">Start (minutes)</label>
+          <input id="start" type="number" min="0" max="1440" step="1" value="660">
+          <span class="badge" id="start-hhmm">11:00</span>
+        </div>
+        <div>
+          <label for="end">End (minutes)</label>
+          <input id="end" type="number" min="0" max="1440" step="1" value="720">
+          <span class="badge" id="end-hhmm">12:00</span>
+        </div>
+      </div>
+      <div id="presets">
+        <button type="button" class="preset" data-s="660" data-e="720">660–720</button>
+        <button type="button" class="preset" data-s="630" data-e="690">630–690</button>
+        <button type="button" class="preset" data-s="720" data-e="840">720–840</button>
+        <button type="button" class="preset" data-s="720" data-e="841">720–841</button>
+        <button type="button" class="preset" data-s="540" data-e="570">540–570</button>
+      </div>
+      <div class="hint" id="hint" aria-live="polite"></div>
+      <button type="button" class="primary" id="check">Check availability</button>
+      <div id="result" class="result" role="status" hidden></div>
+      <h3>Bookings of the selected room (read-only)</h3>
+      <ul class="bookings" id="bookings"></ul>
+      <div class="timeline" id="timeline" aria-hidden="true"></div>
+      <div class="ticks" aria-hidden="true"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>24:00</span></div>
+    </section>
+
+    <section class="card wide">
+      <h2>Rules</h2>
+      <div class="rules-grid">
+        <ol class="rules">
+          <li>AC1 — 0 ≤ start &lt; end ≤ 1440 and start &gt; now.</li>
+          <li>AC2 — duration (end − start) ≤ 120 minutes.</li>
+          <li>AC3 — a blocked room rejects every request.</li>
+          <li>AC4 — no overlap with the room's bookings; touching endpoints are allowed.</li>
+          <li>AC5 — clear Available / Unavailable verdict; bookings are never changed.</li>
+          <li>AC6 — human-readable feedback and a usable mobile layout.</li>
+        </ol>
+        <ol class="rules">
+          <li>F1 — room capacity ≥ attendees.</li>
+          <li>F2 — room has ALL selected equipment.</li>
+          <li>F3 — a blocked room is never reported as available.</li>
+          <li>F4 — a clear empty state when nothing matches.</li>
+          <li>F5 — changing the selected room refreshes the result.</li>
+        </ol>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="ui/app.js"></script>
+</body>
+</html>
