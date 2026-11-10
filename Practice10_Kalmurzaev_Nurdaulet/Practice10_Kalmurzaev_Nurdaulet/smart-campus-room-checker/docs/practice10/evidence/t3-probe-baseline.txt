@@ -1,0 +1,16 @@
+$ node tools/probe.mjs   # read-only UI probe of the baseline build (p09-final-checkpoint)
+P1  start=660.5 end=720 now=540 (AC1 whole minutes)
+    -> AvailableRoom 304 is free from 11:00 to 12:00.
+P2  start=600.9 end=720 (overlaps 600-660 if read as 600.9)
+    -> Unavailable(AC4)Overlaps existing booking 10:00–11:00 (Robotics Club (fictional)).
+P3  now=2000 (outside 0..1439), request 660-720
+    -> Unavailable(AC1)Start (11:00) must be strictly after now (33:20).
+P4  now=-30 (outside 0..1439), request 0-60
+    -> AvailableRoom 304 is free from 00:00 to 01:00.
+P5  now field cleared -> value shown in #now
+    -> now input value = "0"
+P6  AC5 bookings list unchanged after 4 checks
+    -> unchanged: 10:00–11:00 · [600, 660) · Robotics Club (fictional)
+P7  AC4 touching 660-720 (control case)
+    -> AvailableRoom 304 is free from 11:00 to 12:00.
+page errors: none

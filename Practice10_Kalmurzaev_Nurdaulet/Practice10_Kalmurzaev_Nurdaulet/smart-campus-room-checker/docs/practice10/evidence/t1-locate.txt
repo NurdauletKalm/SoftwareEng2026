@@ -1,0 +1,17 @@
+$ ls README.md AGENTS.md CONTRIBUTING.md .env.example .github tests src/__tests__ 2>&1; echo; node -e "console.log(JSON.stringify(require('./package.json').scripts,null,2))"
+ls: cannot access 'CONTRIBUTING.md': No such file or directory
+ls: cannot access '.env.example': No such file or directory
+ls: cannot access '.github': No such file or directory
+ls: cannot access 'tests': No such file or directory
+ls: cannot access 'src/__tests__': No such file or directory
+AGENTS.md
+README.md
+
+{
+  "dev": "vite",
+  "build": "vite build",
+  "lint": "eslint .",
+  "preview": "vite preview",
+  "typecheck": "tsc --noEmit -p tsconfig.app.json"
+}
+[exit code: 0]

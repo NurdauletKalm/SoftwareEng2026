@@ -1,0 +1,16 @@
+$ PROJECT=<worktree @ p09-final-checkpoint> node tools/ui-screenshots.mjs before screenshots
+before 660-720 desktop                        -> AvailableRoom 304 is free from 11:00 to 12:00.
+before 660.5-720 desktop                      -> AvailableRoom 304 is free from 11:00 to 12:00.
+before now=2000, 660-720                      -> Unavailable(AC1)Start (11:00) must be strictly after now (33:20).
+before mobile 375px, 630-690                  -> Unavailable(AC4)Overlaps existing booking 10:00–11:00 (Robotics Club (fictional)).
+before mobile horizontal overflow (px)        -> 0
+before page errors: none
+
+$ node tools/ui-screenshots.mjs after screenshots   # branch p10/risk-mitigations
+after  660.5-720 desktop                      -> Unavailable(AC1)Enter start and end as whole minutes after midnight.
+after  now=-30, 0-60                          -> Unavailable(AC1)Current time now must be a whole minute 0–1439.
+after  660-720 desktop (control)              -> AvailableRoom 304 is free from 11:00 to 12:00.
+after  mobile 375px, 630-690                  -> Unavailable(AC4)Overlaps existing booking 10:00–11:00 (Robotics Club (fictional)).
+after  mobile horizontal overflow (px)        -> 0
+after  mobile 375px, blocked room, 660-720    -> Unavailable(AC3)Room 304 is blocked — every request is rejected.
+after  page errors: none

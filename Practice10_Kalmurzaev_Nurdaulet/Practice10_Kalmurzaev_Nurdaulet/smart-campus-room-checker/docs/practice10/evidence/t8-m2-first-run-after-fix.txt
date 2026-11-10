@@ -1,0 +1,37 @@
+$ npx vitest run tests/availability.regression.test.ts
+npm notice run smart-campus-room-checker@0.0.0 npx
+npm notice run 'vitest' run tests/availability.regression.test.ts
+
+ RUN  v2.1.9 ~/Practice10_Kalmurzaev_Nurdaulet/smart-campus-room-checker
+
+ ❯ tests/availability.regression.test.ts (17 tests | 1 failed) 12ms
+   × R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P3: now=2000 explains the invalid now instead of "33:20" 6ms
+     → expected 'Current time now must be a whole minu…' to match /0.1439/
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P3: now=2000 explains the invalid now instead of "33:20"
+AssertionError: expected 'Current time now must be a whole minu…' to match /0.1439/
+
+- Expected: 
+/0.1439/
+
++ Received: 
+"Current time now must be a whole minute from 0 to 1439."
+
+ ❯ tests/availability.regression.test.ts:35:23
+     33|     const r = canBook(660, 720, 2000, false, BASE);
+     34|     expect(r.available).toBe(false);
+     35|     expect(r.message).toMatch(/0.1439/);
+       |                       ^
+     36|     expect(r.message).not.toMatch(/33:20/);
+     37|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  23:22:01
+   Duration  376ms (transform 45ms, setup 0ms, collect 41ms, tests 12ms, environment 0ms, prepare 78ms)
+
+[exit code: 1]

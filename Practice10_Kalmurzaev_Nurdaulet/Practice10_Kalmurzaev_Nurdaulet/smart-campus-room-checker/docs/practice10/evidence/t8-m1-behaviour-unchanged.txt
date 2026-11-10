@@ -1,0 +1,2 @@
+$ diff <(probe on p09-final-checkpoint) <(probe after M1 refactor)   # no behaviour change expected
+(identical: 7/7 probe results unchanged)

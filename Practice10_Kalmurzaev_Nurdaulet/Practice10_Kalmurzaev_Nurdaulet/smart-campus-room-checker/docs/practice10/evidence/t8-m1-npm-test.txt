@@ -1,0 +1,28 @@
+$ npx vitest run --reporter=verbose
+npm notice run smart-campus-room-checker@0.0.0 npx
+npm notice run 'vitest' run --reporter=verbose
+
+ RUN  v2.1.9 ~/Practice10_Kalmurzaev_Nurdaulet/smart-campus-room-checker
+
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC1 starts now is rejected (540-570, now=540)
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC1 reversed times are rejected (720-660)
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC1 valid day bound 1320-1440 is allowed
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC1 end 1441 is rejected
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC2 exactly 120 minutes is allowed (720-840)
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC2 121 minutes is rejected (720-841)
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC3 blocked room is rejected
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC4 touching endpoint is allowed (660-720 vs 600-660)
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC4 overlap is rejected (630-690 vs 600-660)
+ ✓ tests/availability.parity.test.ts > canBook — parity with python/test_booking.py > AC5 existing bookings are not mutated
+ ✓ tests/availability.parity.test.ts > canBook — rule reported to the user (AC6 feedback) > 540-570 blocked=false -> AC1
+ ✓ tests/availability.parity.test.ts > canBook — rule reported to the user (AC6 feedback) > 720-841 blocked=false -> AC2
+ ✓ tests/availability.parity.test.ts > canBook — rule reported to the user (AC6 feedback) > 660-720 blocked=true -> AC3
+ ✓ tests/availability.parity.test.ts > canBook — rule reported to the user (AC6 feedback) > 630-690 blocked=false -> AC4
+ ✓ tests/availability.parity.test.ts > canBook — rule reported to the user (AC6 feedback) > 660-720 blocked=false -> OK
+
+ Test Files  1 passed (1)
+      Tests  15 passed (15)
+   Start at  23:21:08
+   Duration  373ms (transform 49ms, setup 0ms, collect 44ms, tests 6ms, environment 0ms, prepare 74ms)
+
+[exit code: 0]

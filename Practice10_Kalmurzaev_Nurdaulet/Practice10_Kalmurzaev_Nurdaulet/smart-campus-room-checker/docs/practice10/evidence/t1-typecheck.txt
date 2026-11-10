@@ -1,0 +1,2 @@
+$ npm run typecheck --silent
+[exit code: 0]

@@ -1,0 +1,30 @@
+$ npx vitest run --reporter=verbose tests/availability.regression.test.ts
+npm notice run smart-campus-room-checker@0.0.0 npx
+npm notice run 'vitest' run --reporter=verbose tests/availability.regression.test.ts
+
+ RUN  v2.1.9 ~/Practice10_Kalmurzaev_Nurdaulet/smart-campus-room-checker
+
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("660.5") is rejected (NaN)
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("6e2") is rejected (NaN)
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("") is rejected (NaN)
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes(" ") is rejected (NaN)
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("-30") is rejected (NaN)
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("12abc") is rejected (NaN)
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("0") === 0
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("660") === 660
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("1440") === 1440
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > UI probe P1: 660.5-720 is Unavailable with an AC1 message
+ ✓ tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > a non-integer number passed directly is rejected
+ ✓ tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P4: now=-30 does not make 0-60 Available
+ ✓ tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P3: now=2000 explains the invalid now instead of "33:20"
+ ✓ tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > now=NaN is rejected
+ ✓ tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > now=1440 is rejected
+ ✓ tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > now=540.5 is rejected
+ ✓ tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > boundaries now=0 and now=1439 are still valid
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  23:22:17
+   Duration  388ms (transform 56ms, setup 0ms, collect 48ms, tests 7ms, environment 0ms, prepare 87ms)
+
+[exit code: 0]

@@ -1,0 +1,17 @@
+$ cd python && python3 test_booking.py
+test_ac1_exceeds_1440_rejected (__main__.TestCanBook.test_ac1_exceeds_1440_rejected) ... ok
+test_ac1_reversed_times_rejected (__main__.TestCanBook.test_ac1_reversed_times_rejected) ... ok
+test_ac1_starts_now_rejected (__main__.TestCanBook.test_ac1_starts_now_rejected) ... ok
+test_ac1_valid_day_bound_1440 (__main__.TestCanBook.test_ac1_valid_day_bound_1440) ... ok
+test_ac2_121_rejected (__main__.TestCanBook.test_ac2_121_rejected) ... ok
+test_ac2_exactly_120_allowed (__main__.TestCanBook.test_ac2_exactly_120_allowed) ... ok
+test_ac3_blocked_rejected (__main__.TestCanBook.test_ac3_blocked_rejected) ... ok
+test_ac4_overlap_rejected (__main__.TestCanBook.test_ac4_overlap_rejected) ... ok
+test_ac4_touching_allowed (__main__.TestCanBook.test_ac4_touching_allowed) ... ok
+test_ac5_existing_not_mutated (__main__.TestCanBook.test_ac5_existing_not_mutated) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.000s
+
+OK
+[exit code: 0]

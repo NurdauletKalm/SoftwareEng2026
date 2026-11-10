@@ -1,0 +1,38 @@
+--- a/AGENTS.md
++++ b/AGENTS.md
+@@ -6,11 +6,19 @@
+ Smart Campus Room Availability Checker for Room 304 (Innovation Lab). React + TypeScript + Tailwind,
+ built with Vite. Python reference in `python/`.
+ 
++## Scope (fixed constraints)
++- One fictional room (Room 304) with fictional bookings only. No real names or personal data.
++- No login, no database, no backend, no external APIs or production services.
++- Preserve the acceptance contract AC1–AC6 in `README.md`. That contract is the source of truth;
++  `src/lib/availability.ts` and `python/booking.py` must both implement it.
++
+ ## Commands
+ - Install: `npm install`
+ - Dev server: `npm run dev`
+ - Build: `npm run build`
+ - Lint: `npm run lint`
++- Type check: `npm run typecheck`
++- Tests: `npm test` and `cd python && python3 test_booking.py`
+ 
+ ## Coding guidelines
+ - Use functional React components and hooks.
+@@ -20,3 +28,15 @@
+ 
+ ## Data
+ - Bookings are fictional sample data. Do not add booking creation or deletion.
++
++## Forbidden actions
++- Never add, read or commit secrets, tokens or `.env` files.
++- Never deploy, publish or push to a remote, and never call external services.
++- Do not add dependencies or change the stack without asking first.
++- Do not refactor code that is unrelated to the requested change.
++
++## Review gate
++- Work on a separate branch, never directly on `main`.
++- Before proposing a change as done, run lint, typecheck, `npm test`, the Python tests and `npm run build`.
++  Report the real output; never describe an unexecuted test as passed.
++- A human reviews the diff and approves it before any merge.

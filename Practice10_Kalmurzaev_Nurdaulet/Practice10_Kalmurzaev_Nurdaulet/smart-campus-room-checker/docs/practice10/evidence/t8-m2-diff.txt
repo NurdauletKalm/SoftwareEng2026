@@ -1,0 +1,147 @@
+$ git diff -- src python tests
+diff --git a/python/booking.py b/python/booking.py
+index 2304728..fae9125 100644
+--- a/python/booking.py
++++ b/python/booking.py
+@@ -15,6 +15,9 @@ def can_book(start: int, end: int, now: int, blocked: bool,
+     for value in (start, end, now):
+         if not isinstance(value, int) or isinstance(value, bool):
+             return False
++    # AC1: now must be a whole minute in 0..1439 (R2)
++    if now < 0 or now >= DAY_MINUTES:
++        return False
+     # AC3: a blocked room rejects every request
+     if blocked:
+         return False
+diff --git a/python/test_booking.py b/python/test_booking.py
+index 9265ff6..1dff201 100644
+--- a/python/test_booking.py
++++ b/python/test_booking.py
+@@ -39,6 +39,15 @@ class TestCanBook(unittest.TestCase):
+         self.assertTrue(can_book(660, 720, 540, False, existing))
+         self.assertEqual(existing, snapshot)
+ 
++    # Regression for R2: now must be a whole minute in 0..1439
++    def test_r2_now_out_of_range_rejected(self):
++        self.assertFalse(can_book(0, 60, -30, False, []))
++        self.assertFalse(can_book(660, 720, 1440, False, []))
++
++    def test_r2_now_boundaries_valid(self):
++        self.assertTrue(can_book(60, 120, 0, False, []))
++        self.assertTrue(can_book(1439, 1440, 1438, False, []))
++
+ 
+ if __name__ == "__main__":
+     unittest.main(verbosity=2)
+diff --git a/src/App.tsx b/src/App.tsx
+index f1d69e4..b0d9bcc 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -26,7 +26,7 @@ const PRESETS = [
+ ];
+ 
+ export default function App() {
+-  const [now, setNow] = useState(540);
++  const [nowInput, setNowInput] = useState('540');
+   const [blocked, setBlocked] = useState(false);
+   const [datasetKey, setDatasetKey] = useState<keyof typeof DATASETS>('single');
+   const [startInput, setStartInput] = useState('660');
+@@ -34,6 +34,7 @@ export default function App() {
+   const [result, setResult] = useState<CheckResult | null>(null);
+ 
+   const bookings = DATASETS[datasetKey].bookings;
++  const now = parseMinutes(nowInput);
+   const start = parseMinutes(startInput);
+   const end = parseMinutes(endInput);
+ 
+@@ -76,9 +77,9 @@ export default function App() {
+               type="number"
+               min={0}
+               max={1439}
+-              value={now}
++              value={nowInput}
+               onChange={(e) => {
+-                setNow(parseInt(e.target.value, 10) || 0);
++                setNowInput(e.target.value);
+                 setResult(null);
+               }}
+               className="w-28 rounded-lg border border-slate-300 px-3 py-2"
+diff --git a/src/lib/availability.ts b/src/lib/availability.ts
+index 9a14bda..cbf3d75 100644
+--- a/src/lib/availability.ts
++++ b/src/lib/availability.ts
+@@ -12,8 +12,9 @@ export type CheckResult = {
+ export const DAY_MINUTES = 1440;
+ export const MAX_DURATION = 120;
+ 
++// Accepts only plain whole numbers ("660"); anything else ("660.5", "6e2", "", "-30") becomes NaN (R1).
+ export function parseMinutes(input: string): number {
+-  return parseInt(input, 10);
++  return /^\d+$/.test(input) ? Number(input) : NaN;
+ }
+ 
+ export function toHHMM(minutes: number): string {
+@@ -30,7 +31,10 @@ export function canBook(
+   blocked: boolean,
+   existing: readonly Booking[],
+ ): CheckResult {
+-  if (Number.isNaN(start) || Number.isNaN(end)) {
++  if (!Number.isInteger(now) || now < 0 || now >= DAY_MINUTES) {
++    return { available: false, rule: 'AC1', message: 'Current time now must be a whole minute 0–1439.' };
++  }
++  if (!Number.isInteger(start) || !Number.isInteger(end)) {
+     return { available: false, rule: 'AC1', message: 'Enter start and end as whole minutes after midnight.' };
+   }
+   if (blocked) {
+diff --git a/tests/availability.regression.test.ts b/tests/availability.regression.test.ts
+new file mode 100644
+index 0000000..492e51d
+--- /dev/null
++++ b/tests/availability.regression.test.ts
+@@ -0,0 +1,46 @@
++// Regression tests for confirmed risks R1 (non-integer minutes accepted) and R2 (invalid `now` accepted).
++import { describe, expect, it } from 'vitest';
++import { canBook, parseMinutes } from '../src/lib/availability';
++
++const BASE = [{ start: 600, end: 660, label: 'fictional' }];
++
++describe('R1 — start/end must be whole minutes (AC1)', () => {
++  it.each(['660.5', '6e2', '', ' ', '-30', '12abc'])('parseMinutes(%j) is rejected (NaN)', (raw) => {
++    expect(parseMinutes(raw)).toBeNaN();
++  });
++  it.each([
++    ['0', 0],
++    ['660', 660],
++    ['1440', 1440],
++  ])('parseMinutes(%j) === %i', (raw, value) => expect(parseMinutes(raw)).toBe(value));
++  it('UI probe P1: 660.5-720 is Unavailable with an AC1 message', () => {
++    const r = canBook(parseMinutes('660.5'), parseMinutes('720'), 540, false, BASE);
++    expect(r.available).toBe(false);
++    expect(r.rule).toBe('AC1');
++  });
++  it('a non-integer number passed directly is rejected', () => {
++    expect(canBook(660.5, 720, 540, false, BASE).available).toBe(false);
++  });
++});
++
++describe('R2 — now must be a whole minute in 0..1439 (AC1)', () => {
++  it('UI probe P4: now=-30 does not make 0-60 Available', () => {
++    const r = canBook(0, 60, -30, false, BASE);
++    expect(r.available).toBe(false);
++    expect(r.message).toMatch(/now/i);
++  });
++  it('UI probe P3: now=2000 explains the invalid now instead of "33:20"', () => {
++    const r = canBook(660, 720, 2000, false, BASE);
++    expect(r.available).toBe(false);
++    expect(r.message).toMatch(/0.1439/);
++    expect(r.message).not.toMatch(/33:20/);
++  });
++  it.each([NaN, 1440, 540.5])('now=%s is rejected', (now) => {
++    expect(canBook(660, 720, now, false, BASE).available).toBe(false);
++  });
++  it('boundaries now=0 and now=1439 are still valid', () => {
++    expect(canBook(60, 120, 0, false, BASE).available).toBe(true);
++    expect(canBook(1439, 1440, 1438, false, BASE).available).toBe(true);
++    expect(canBook(1439, 1440, 1439, false, BASE).available).toBe(false); // starts now
++  });
++});

@@ -1,0 +1,208 @@
+$ npx vitest run tests/availability.regression.test.ts
+npm notice run smart-campus-room-checker@0.0.0 npx
+npm notice run 'vitest' run tests/availability.regression.test.ts
+
+ RUN  v2.1.9 ~/Practice10_Kalmurzaev_Nurdaulet/smart-campus-room-checker
+
+ ❯ tests/availability.regression.test.ts (17 tests | 10 failed) 19ms
+   × R1 — start/end must be whole minutes (AC1) > parseMinutes("660.5") is rejected (NaN) 8ms
+     → expected 660 to be NaN
+   × R1 — start/end must be whole minutes (AC1) > parseMinutes("6e2") is rejected (NaN) 1ms
+     → expected 6 to be NaN
+   × R1 — start/end must be whole minutes (AC1) > parseMinutes("-30") is rejected (NaN) 1ms
+     → expected -30 to be NaN
+   × R1 — start/end must be whole minutes (AC1) > parseMinutes("12abc") is rejected (NaN) 1ms
+     → expected 12 to be NaN
+   × R1 — start/end must be whole minutes (AC1) > UI probe P1: 660.5-720 is Unavailable with an AC1 message 1ms
+     → expected true to be false // Object.is equality
+   × R1 — start/end must be whole minutes (AC1) > a non-integer number passed directly is rejected 1ms
+     → expected true to be false // Object.is equality
+   × R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P4: now=-30 does not make 0-60 Available 1ms
+     → expected true to be false // Object.is equality
+   × R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P3: now=2000 explains the invalid now instead of "33:20" 1ms
+     → expected 'Start (11:00) must be strictly after …' to match /0.1439/
+   × R2 — now must be a whole minute in 0..1439 (AC1) > now=NaN is rejected 1ms
+     → expected true to be false // Object.is equality
+   × R2 — now must be a whole minute in 0..1439 (AC1) > now=540.5 is rejected 1ms
+     → expected true to be false // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("660.5") is rejected (NaN)
+AssertionError: expected 660 to be NaN
+
+- Expected
++ Received
+
+- NaN
++ 660
+
+ ❯ tests/availability.regression.test.ts:9:31
+      7| describe('R1 — start/end must be whole minutes (AC1)', () => {
+      8|   it.each(['660.5', '6e2', '', ' ', '-30', '12abc'])('parseMinutes(%j)…
+      9|     expect(parseMinutes(raw)).toBeNaN();
+       |                               ^
+     10|   });
+     11|   it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("6e2") is rejected (NaN)
+AssertionError: expected 6 to be NaN
+
+- Expected
++ Received
+
+- NaN
++ 6
+
+ ❯ tests/availability.regression.test.ts:9:31
+      7| describe('R1 — start/end must be whole minutes (AC1)', () => {
+      8|   it.each(['660.5', '6e2', '', ' ', '-30', '12abc'])('parseMinutes(%j)…
+      9|     expect(parseMinutes(raw)).toBeNaN();
+       |                               ^
+     10|   });
+     11|   it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("-30") is rejected (NaN)
+AssertionError: expected -30 to be NaN
+
+- Expected
++ Received
+
+- NaN
++ -30
+
+ ❯ tests/availability.regression.test.ts:9:31
+      7| describe('R1 — start/end must be whole minutes (AC1)', () => {
+      8|   it.each(['660.5', '6e2', '', ' ', '-30', '12abc'])('parseMinutes(%j)…
+      9|     expect(parseMinutes(raw)).toBeNaN();
+       |                               ^
+     10|   });
+     11|   it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > parseMinutes("12abc") is rejected (NaN)
+AssertionError: expected 12 to be NaN
+
+- Expected
++ Received
+
+- NaN
++ 12
+
+ ❯ tests/availability.regression.test.ts:9:31
+      7| describe('R1 — start/end must be whole minutes (AC1)', () => {
+      8|   it.each(['660.5', '6e2', '', ' ', '-30', '12abc'])('parseMinutes(%j)…
+      9|     expect(parseMinutes(raw)).toBeNaN();
+       |                               ^
+     10|   });
+     11|   it.each([
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > UI probe P1: 660.5-720 is Unavailable with an AC1 message
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/availability.regression.test.ts:18:25
+     16|   it('UI probe P1: 660.5-720 is Unavailable with an AC1 message', () =…
+     17|     const r = canBook(parseMinutes('660.5'), parseMinutes('720'), 540,…
+     18|     expect(r.available).toBe(false);
+       |                         ^
+     19|     expect(r.rule).toBe('AC1');
+     20|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R1 — start/end must be whole minutes (AC1) > a non-integer number passed directly is rejected
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/availability.regression.test.ts:22:61
+     20|   });
+     21|   it('a non-integer number passed directly is rejected', () => {
+     22|     expect(canBook(660.5, 720, 540, false, BASE).available).toBe(false…
+       |                                                             ^
+     23|   });
+     24| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P4: now=-30 does not make 0-60 Available
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/availability.regression.test.ts:29:25
+     27|   it('UI probe P4: now=-30 does not make 0-60 Available', () => {
+     28|     const r = canBook(0, 60, -30, false, BASE);
+     29|     expect(r.available).toBe(false);
+       |                         ^
+     30|     expect(r.message).toMatch(/now/i);
+     31|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > UI probe P3: now=2000 explains the invalid now instead of "33:20"
+AssertionError: expected 'Start (11:00) must be strictly after …' to match /0.1439/
+
+- Expected: 
+/0.1439/
+
++ Received: 
+"Start (11:00) must be strictly after now (33:20)."
+
+ ❯ tests/availability.regression.test.ts:35:23
+     33|     const r = canBook(660, 720, 2000, false, BASE);
+     34|     expect(r.available).toBe(false);
+     35|     expect(r.message).toMatch(/0.1439/);
+       |                       ^
+     36|     expect(r.message).not.toMatch(/33:20/);
+     37|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/10]⎯
+
+ FAIL  tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > now=NaN is rejected
+ FAIL  tests/availability.regression.test.ts > R2 — now must be a whole minute in 0..1439 (AC1) > now=540.5 is rejected
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ tests/availability.regression.test.ts:39:59
+     37|   });
+     38|   it.each([NaN, 1440, 540.5])('now=%s is rejected', (now) => {
+     39|     expect(canBook(660, 720, now, false, BASE).available).toBe(false);
+       |                                                           ^
+     40|   });
+     41|   it('boundaries now=0 and now=1439 are still valid', () => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/10]⎯
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 7 passed (17)
+   Start at  23:21:41
+   Duration  397ms (transform 51ms, setup 0ms, collect 43ms, tests 19ms, environment 0ms, prepare 79ms)
+
+[exit code: 1]

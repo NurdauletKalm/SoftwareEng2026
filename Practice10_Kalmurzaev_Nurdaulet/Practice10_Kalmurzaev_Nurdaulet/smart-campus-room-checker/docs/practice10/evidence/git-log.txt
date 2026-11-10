@@ -1,0 +1,7 @@
+$ git log --oneline --decorate --graph --all
+* 78a3dd7 (HEAD -> p10/risk-mitigations) docs(practice10): risk review, register, readiness audit, AGENTS.md audit, mitigations, background-agent spec, release decision, evidence
+* 03276c3 docs(README): document npm test, src/lib and tests layout
+* 1c14022 docs(AGENTS.md): add scope, AC1-AC6 source of truth, forbidden actions, review gate
+* e2c42e4 M2 (R1, R2): strict whole-minute parsing and now range validation (AC1)
+* 5e22f6a M1 (R3): extract canBook into src/lib/availability.ts, add Vitest parity tests
+* c9e80c4 (tag: p09-final-checkpoint, main) Practice #09 final: Room 304 availability checker (baseline checkpoint)

@@ -1,0 +1,15 @@
+$ npm test
+npm notice run smart-campus-room-checker@0.0.0 test
+npm notice run vitest run
+
+ RUN  v2.1.9 ~/Practice10_Kalmurzaev_Nurdaulet/smart-campus-room-checker
+
+ ✓ tests/availability.parity.test.ts (15 tests) 6ms
+ ✓ tests/availability.regression.test.ts (17 tests) 6ms
+
+ Test Files  2 passed (2)
+      Tests  32 passed (32)
+   Start at  23:22:18
+   Duration  376ms (transform 81ms, setup 0ms, collect 104ms, tests 12ms, environment 0ms, prepare 149ms)
+
+[exit code: 0]

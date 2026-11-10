@@ -1,0 +1,16 @@
+$ python3 -c "from booking import can_book; ..."   # AI-11 check, run in python/
+can_book(0, 60, -30, False, []) = True
+
+$ grep -rn "dangerouslySetInnerHTML\|innerHTML" src   # AI-08 check
+[exit code: 1  -> no matches]
+
+$ grep -rln "" --include=*.test.* --include=*.spec.* . --exclude-dir=node_modules   # AI-03 check
+[exit code: 1  -> no TS/JS test files]
+
+$ ls -a .github .husky .env.example   # AI-06 check
+".github": No such file or directory (os error 2)
+".husky": No such file or directory (os error 2)
+".env.example": No such file or directory (os error 2)
+
+$ git status --porcelain   # after read-only review
+?? docs/

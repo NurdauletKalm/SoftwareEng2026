@@ -1,0 +1,1 @@
+{"name":"p10-evidence-tools","private":true,"type":"module","devDependencies":{"playwright-core":"1.56.1"},"dependencies":{"marked":"12.0.2"}}
